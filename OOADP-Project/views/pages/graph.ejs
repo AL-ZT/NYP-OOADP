@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="/">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link href="/stylesheet/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/stylesheet/css/now-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.bundle.min.js"></script>
+    <style>
+    .selected {
+      background-color:#001f3f;
+    }
+    </style>
+</head>
+<% include ../partials/header %>
+
+
+
+
+<body class="">
+    <div class="wrapper ">
+        <div class="sidebar" data-color="orange">
+
+
+          <div class="sidebar-wrapper">
+            <ul class="nav">
+  
+              <li>
+                <a href="/bid/membertable">
+                  <i class="now-ui-icons location_map-big"></i>
+                  <p>Users</p>
+                </a>
+              </li>
+              <li>
+                <a class="hmmhtml" href="/bid/dashboard">
+                  <i class="now-ui-icons users_single-02"></i>
+                  <p>Edit bids</p>
+                </a>
+              </li>
+              <li class="">
+                <a href="/bid/dashboard">
+                  <i class="fa fa-file"></i>
+                  <p>Table List</p>
+                </a>
+              </li>
+              <li class="">
+                  <a href="/bid/importbid">
+                    <i class="fa fa-file"></i>
+                    <p>Import Bid</p>
+                  </a>
+                </li>
+                <li class="">
+                    <a href="/bid/bidhistory">
+                      <i class="now-ui-icons  location_map-big"></i>
+                      <p>Bid History</p>
+                    </a>
+                  </li>
+                  <li class="active">
+                    <a href="/bid/graph">
+                        <i class="now-ui-icons design_bullet-list-67"></i>
+                        <p>Graph List</p>
+                    </a>
+                    </li>
+            </ul>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="main-panel">
+
+
+          <div class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h4 class="card-title">Bids Star Rating</h4>
+                      </div>
+                      <div class="card-body">
+    
+                        <div style="height:337px; width: 500px;">
+                            <canvas id="myChart" width="200" height="140"></canvas>
+                        </div>
+     
+    
+    
+                      </div>
+                    </div>
+                  </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="card-title">Bids latest 5
+                    </h4>
+                  </div>
+                  <div class="card-body">
+
+                    <div style="height:337px; width: 500px;">
+                        <canvas id="myChart2" width="200" height="140"></canvas>
+                    </div>
+ 
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="card">
+                        <div class="card-header">
+                                <h4 class="card-title">Number of bidders</h4>
+                              </div>
+                  <div class="card-body">
+                        <div class="row">
+                            
+                      <div class="row col-lg-6">
+                        <div>
+                          <div class="row">
+                            <div style="height:500px; width: 600px;">
+                                <canvas id="myChart3" width="400" height="280"></canvas>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row col-lg-6">
+
+                            <div class="typography-line">
+                                <Br>
+                                    <br>
+                                    <br>
+                                    <span>Description</span>
+                                    <br>
+                                    <br>
+                                    <blockquote>
+                                      <p class="blockquote blockquote-primary">
+                                        These three graphs represents 5 bids, 5 products, 5 star ratings. Some are taken randomly, and some are part of the 5 latest input of users.
+                                        <br>
+                                        <br>
+                                      </p>
+                                    </blockquote>
+                                  </div>
+                      </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% include ../partials/footer %>
+
+    <script>
+        var arraytitle2 = [];
+        var arraycount = [];
+        `<% bidgraph.forEach(function(bids){ %>`
+        arraytitle2.push(`<%= bids.title %>`);
+        arraycount.push(`<%= bids.starcount %>`);
+        `<% }); %>`
+        var newarrtitle2 = arraytitle2.slice(Math.max(arraytitle2.length - 5, 0));
+        var newarrcount = arraycount.slice(Math.max(arraycount.length - 5, 0));
+        console.log(newarrtitle2);
+        console.log(newarrcount);
+        var ctx2 = document.getElementById("myChart3");
+        var myChart3 = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: [newarrtitle2[0], newarrtitle2[1], newarrtitle2[2], newarrtitle2[3], newarrtitle2[4]],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [newarrcount[0], newarrcount[1], newarrcount[2], newarrcount[3], newarrcount[4]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+        </script>
+
+<script>
+    var arrstar = [];
+    var arrstartitle = [];
+    `<% bidgraph.forEach(function(bids){ %>`
+        arrstar.push(`<%= bids.title %>`);
+        arrstartitle.push(`<%= bids.highbid %>`);
+    `<% }); %>`
+    var newarr = arrstar.slice(Math.max(arrstar.length - 5, 0));
+    var newarrtitle = arrstartitle.slice(Math.max(arrstartitle.length - 5, 0));
+    console.log(newarr);
+    console.log(newarrtitle);
+    var ctx1 = document.getElementById("myChart2");
+    var myChart2 = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: [newarr[0], newarr[1], newarr[2], newarr[3], newarr[4]],
+            datasets: [{
+                label: 'List of highest bids',
+                data: [newarrtitle[0], newarrtitle[1], newarrtitle[2], newarrtitle[3], newarrtitle[4]],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
+    <script>
+        var arr = [];
+        var arrname= [];
+        `<% bidgraph.forEach(function(bids){ %>`
+        arrname.push(`<%= bids.title %>`);
+        arr.push(`<%= bids.startotal %>`);
+        `<% }); %>`
+        var newname = arrname.slice(Math.max(arrname.length - 5, 0));
+        var newtotal = arr.slice(Math.max(arr.length - 5, 0));
+        console.log(newname);
+        console.log(newtotal);
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [newname[0], newname[1], newname[2], newname[3], newname[4]],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [newtotal[0], newtotal[1], newtotal[2], newtotal[3], newtotal[4]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+        </script>
+  </body>
+</html>

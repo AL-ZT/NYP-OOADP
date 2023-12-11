@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include ../partials/header %>
+
+    <head>
+		<style>
+			@media screen and (min-width:993px) {
+				.firstelement {
+					padding-top: 140px;
+				}
+			}
+
+            .img {
+                position: relative;
+                top : 80px;
+                left : 50px;
+                float: left;
+                width:  500px;
+                height: 500px;
+                background-position: 50% 50%;
+                background-repeat:   no-repeat;
+                background-size:     cover;
+            }
+            
+            .listpic {
+                transition: transform .2s;
+            }
+
+            .listpic:hover {
+                transform: scale(1.2);
+            }
+
+            #thumbs-up:hover {
+                transform: scale(1.2);
+                cursor: pointer;
+            }
+
+            #thumbs-down:hover {
+                transform: scale(1.2);
+                cursor: pointer;
+            }
+		</style>
+    </head>
+    
+    <body>
+        <% if (memberDetails[0]) { %>
+            <% if (user.username == memberDetails[0].username) { %>
+            <div class="container-fluid">
+                <div class="sec-title p-b-60 firstelement">
+                    <h3 class="m-text5 t-center">
+                        User Profile
+                    </h3>
+                </div>
+                <div class="row">
+                    <div class="container col-6" style="height: 800px; background-color: rgb(235, 235, 235);">
+                        <div class="container row">
+                            <div class="container col-1"></div>
+                            <div class="container col-10">
+                                <div class="row">
+                                    <img class="img" id="profilepic" src="/images/profileimages/<%= memberDetails[0].profilePicture %>" style="border : 3px solid lightgray; border-radius: 250px;" />
+                                </div>
+                                <div class="row">
+                                    <div class="upload-btn-wrapper" style="position: relative; top : 110px; left : 200px; overflow: hidden; display: inline-block;">
+                                        <button class="btn" style="padding: 8px 15px; border-radius: 20px; background-color: white; cursor: pointer;">Change Profile Picture</button>
+                                        <form enctype="multipart/form-data" method="POST" action="<%= memberDetails[0].username %>/profilepicupload" id="myform">
+                                            <input type="file" id="profile" name="profile" style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; z-index: 1;" accept="image/jpg, image/jpeg, image/png" onchange="picupdate(this)"/>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p style="position: relative; top : 115px; left : 15%;">Note : Picture will be automatically saved once changed.</p>
+                                </div>
+                                <div class="row">
+                                    <p style="position: relative; top : 120px; left : 30%;">Max Dimension : 500 x 500 pixels</p>
+                                </div>
+                            </div>
+                            <div class="container col-1"></div>
+                        </div>
+                    </div>
+                    <div class="container col-6" style="height: 800px; background-color: rgb(250, 250, 250);">
+                        <div class="container">
+                            <div class="container" style="padding-top : 20px;">
+                                <p>Full Name</p>
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input type="text" id="fullname" name="fullname" class="sizefull s-text7 p-l-22" value="<%= memberDetails[0].name %>" disabled required />
+                                </div>
+                            </div>
+                            <div class="container" style="padding-top : 20px;">
+                                <p>Username</p>
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input type="text" id="username" name="username" class="sizefull s-text7 p-l-22" value="<%= memberDetails[0].username %>" disabled required />
+                                </div>
+                            </div>
+                            <div class="container" style="padding-top : 20px;">
+                                <p>E-mail</p>
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input type="email" id="email" name="email" class="sizefull s-text7 p-l-22" value="<%= memberDetails[0].email %>" disabled required />
+                                </div>
+                            </div>
+                            <div class="container" style="padding-top : 20px;">
+                                <p>Phone</p>
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input type="text" id="phone" name="phone" class="sizefull s-text7 p-l-22" value="<%= memberDetails[0].phone %>" disabled required />
+                                </div>
+                            </div>
+                            <div class="container" style="padding-top : 20px;">
+                                <p>Password</p>
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input type="password" id="password" name="password" class="sizefull s-text7 p-l-22" value="<%= memberDetails[0].password %>" disabled required />
+                                </div>
+                            </div>
+                            <div class="container" style="padding-top : 20px;">
+                                <p>In-Account Balance : $<%= memberDetails[0].balance %></p>
+                                <p>Admin Status : <%= memberDetails[0].adminStatus %></p>
+                            </div>
+                            <div class="container" style="padding-top : 20px;">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <button id="showpass" class="flex-c-m size4 bg7 bo-rad-15 hov1 s-text14 trans-0-4">Show Password</button>
+                                    </div>
+                                    <div class="col-3">
+                                        <button id="editinfo" class="flex-c-m size4 bg7 bo-rad-15 hov1 s-text14 trans-0-4">Edit</button>
+                                    </div>
+                                    <div class="col-1" id="thumbsupcount" style="position: relative; left : 20px;"></div>
+                                    <div class="col-2">
+                                        <img src="/images/thumbs-up.png" style="width : 70px; height: 70px; position: relative; bottom : 20px;">
+                                    </div>
+                                    <div class="col-1" id="thumbsdowncount"></div>
+                                    <div class="col-2">
+                                        <img src="/images/thumbs-down.png"  style="width : 50px; height: 50px; position: relative; bottom : 10px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <img id="loadgif" src='/images/loading-gif.gif' style="display : none; max-width: 30px; max-height: 30px;">
+                                <h6 id="savechangesuccesstxt" style="color: green; display: none;">Changes Saved!</h6>
+                                <h6 id="savechangeerrortxt" style="color: red; display: none;">Error! Changes Not Saved!</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sec-title p-b-60" style="padding-top : 80px;">
+                    <h3 class="m-text5 t-center" id="listings">
+                        Current User Listings
+                    </h3>
+                </div>
+                <div class="container">
+                    <div class="row" id="appendlist">
+                    </div>
+                </div>
+                <div class="sec-title p-b-60" style="padding-top : 80px;">
+                    <h3 class="m-text5 t-center" id="reviews">
+                        User Reviews
+                    </h3>
+                </div>
+                <div class="container" id="appendreviews"></div>
+            </div>
+
+            <div class="btn-back-to-top bg0-hov" id="myBtn">
+                <span class="symbol-btn-back-to-top">
+                    <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                </span>
+            </div>
+            <% } else { %>
+                <div class="container-fluid">
+                    <div class="sec-title p-b-60 firstelement">
+                        <h3 class="m-text5 t-center">
+                            User Profile
+                        </h3>
+                    </div>
+                    <div class="row">
+                        <div class="container col-6" style="height: 800px; background-color: rgb(235, 235, 235);">
+                            <div class="container row">
+                                <div class="container col-1"></div>
+                                <div class="container col-10">
+                                    <img class="img" src="/images/profileimages/<%= memberDetails[0].profilePicture %>" style="border : 3px solid lightgray; border-radius: 250px;" />
+                                </div>
+                                <div class="container col-1"></div>
+                            </div>
+                        </div>
+                        <div class="container col-6" style="height: 800px; background-color: rgb(250, 250, 250);">
+                            <div class="container">
+                                <div class="container" style="padding-top : 20px;">
+                                    <p>Full Name</p>
+                                    <div class="bo4 of-hidden size15 m-b-20">
+                                            <p class="sizefull s-text7 p-l-22" style="position: relative; top : 13px;"><%= memberDetails[0].name %></p>
+                                    </div>
+                                </div>
+                                <div class="container" style="padding-top : 20px;">
+                                    <p>Username</p>
+                                    <div class="bo4 of-hidden size15 m-b-20">
+                                            <p class="sizefull s-text7 p-l-22" style="position: relative; top : 13px;"><%= memberDetails[0].username %></p>
+                                    </div>
+                                </div>
+                                <div class="container" style="padding-top : 20px;">
+                                    <p>E-mail</p>
+                                    <div class="bo4 of-hidden size15 m-b-20">
+                                            <p class="sizefull s-text7 p-l-22" style="position: relative; top : 13px;"><%= memberDetails[0].email %></p>
+                                    </div>
+                                </div>
+                                <div class="container" style="padding-top : 20px;">
+                                    <p>Phone</p>
+                                    <div class="bo4 of-hidden size15 m-b-20">
+                                        <p class="sizefull s-text7 p-l-22" style="position: relative; top : 13px;"><%= memberDetails[0].phone %></p>
+                                    </div>
+                                </div>
+                                <div class="container" style="padding-top : 40px;">
+                                    <p>Admin Status : <%= memberDetails[0].adminStatus %></p>
+                                </div>
+                                <div class="container" style="padding-top : 40px;">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <button id="chatinvite" class="flex-c-m size4 bg7 bo-rad-15 hov1 s-text14 trans-0-4">Invite to Chat</button>
+                                        </div>
+                                        <div class="col-3">
+                                            <button class="flex-c-m size4 bg7 bo-rad-15 hov1 s-text14 trans-0-4" id="gotoreviews">Submit Review</button>
+                                        </div>
+                                        <div class="col-1" id="thumbsupcount" style="position: relative; left : 20px;"></div>
+                                        <div class="col-2">
+                                            <img src="/images/thumbs-up.png" style="width : 70px; height: 70px; position: relative; bottom : 20px;">
+                                        </div>
+                                        <div class="col-1" id="thumbsdowncount"></div>
+                                        <div class="col-2">
+                                            <img src="/images/thumbs-down.png"  style="width : 50px; height: 50px; position: relative; bottom : 10px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sec-title p-b-60" style="padding-top : 80px;">
+                        <h3 class="m-text5 t-center" id="listings">
+                            Current User Listings
+                        </h3>
+                    </div>
+                    <div class="container">
+                        <div class="row" id="appendlist">
+                        </div>
+                    </div>
+                    <div class="sec-title p-b-60" style="padding-top : 80px;">
+                        <h3 class="m-text5 t-center" id="reviews">
+                            User Reviews
+                        </h3>
+                    </div>
+                    <div class="container" id="givereview" style="padding-bottom: 15px; padding-top: 10px; display: none; background-color: lightgray;">
+                        <div class="row">
+                            <p style="position: relative; left : 35%;">Click on either of the voting buttons to submit.</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="row">
+                                    <img class="img" id="reviewprofilepic" src="/images/profileimages/<%= memberDetails[0].profilePicture %>" alt="profilepic" style="position : static; max-width: 100px; max-height: 100px; border: 2px solid lightgray; border-radius: 100px;">
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="row" style="position: relative; top : 25px;">
+                                    <div class="col">
+                                        <div class="container">
+                                            <p>Reviewing For : </p>
+                                            <select class="selection-2" id="selectedproduct">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="container">
+                                            <textarea id="comment" rows="2" cols="50" placeholder="Enter Comment..." required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="container" style="position: relative; top : 10px;">
+                                    <img src="/images/thumbs-up.png" id="thumbs-up" style="width : 70px; height: 70px;">
+                                    <img src="/images/thumbs-down.png" id="thumbs-down" style="width : 50px; height: 50px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container" id="appendreviews"></div>
+                </div>
+
+                <div class="btn-back-to-top bg0-hov" id="myBtn">
+                    <span class="symbol-btn-back-to-top">
+                        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                    </span>
+                </div>
+            <% } %>
+        <% } else { %>
+            <script>
+                alert("Username Does Not Exist! Click Okay to redirect to home page...");
+                window.location.href = "/";
+            </script>
+        <% } %>
+        <% if (memberDetails[0]) { %>
+        <script>
+            var reviews = [];
+            var availablereviews = [];
+
+            $(() => {
+                $('#myBtn').on("click", function(){
+                    $('html, body').animate({scrollTop: 0}, 300);
+                });
+                $("#gotoreviews").click(() => {
+                    renderAvailableReviews();
+                    if (availablereviews.length != 0) {
+                        $([document.documentElement, document.body]).animate({
+                            scrollTop: $("#reviews").offset().top
+                        }, 2000);
+                        setTimeout(function() {
+                            $("#givereview").css("display", "block");
+					        $("#givereview").addClass('animated fadeIn');
+                        }, 2000);
+                    } else {
+                        swal({title: "No Available Reviews Left to be Made With User!", icon:'error'})
+                    }
+                })
+                $("#thumbs-up").click(() => {
+                    var review = {
+                        product : $("#selectedproduct").val(),
+                        user : "<%= memberDetails[0].username %>",
+                        commenter : "<%= user.username %>",
+                        comment : $("#comment").val(),
+                        vote : 1
+                    }
+                    $.ajax({
+                        url : "<%= memberDetails[0].username %>/addreview",
+                        type : "POST",
+                        data : review,
+                        complete : function() {
+                            availablereviews.splice(availablereviews.indexOf($("#selectedproduct").val()), 1)
+                            var pic = $("#reviewprofilepic").attr("src");
+                            $("#reviews").text("User Reviews");
+                            $("#appendreviews").prepend(`<div class="row" style="padding-bottom: 50px; padding-top: 20px;">
+                            <div class="col-2">
+                                <div class="row">
+                                    <img class="img" src="${pic}" alt="profilepic" style="position : static; max-width: 100px; max-height: 100px; border: 2px solid lightgray; border-radius: 100px;">
+                                </div>
+                                <div class="row">
+                                    <p style="position: relative; left: 15%">${review.commenter}</p>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="container">
+                                        <p style="border-bottom : 2px solid lightgray;">Reviewed ${review.product}</p>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 5px;">
+                                    <div class="container sizefull">
+                                        ${review.comment}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="container" style="position: relative; top : 10px;" align="center">
+                                    <img src="/images/thumbs-up.png"style="width : 70px; height: 70px;">
+                                </div>
+                            </div>
+                        </div>`)
+                        },
+                        success : function() {
+                            $("#givereview").css("display", "none");
+                            $("#comment").val("");
+                            var val = $("#thumbsupcount").html();
+                            $("#thumbsupcount").html(++val);
+                        },
+                        error : function() {
+                            alert("Error sending review, please try again!");
+                        }
+                    })
+                })
+                $("#thumbs-down").click(() => {
+                    var review = {
+                        product : $("#selectedproduct").val(),
+                        user : "<%= memberDetails[0].username %>",
+                        commenter : "<%= user.username %>",
+                        comment : $("#comment").val(),
+                        vote : 0
+                    }
+                    $.ajax({
+                        url : "<%= memberDetails[0].username %>/addreview",
+                        type : "POST",
+                        data : review,
+                        complete : function() {
+                            availablereviews.splice(availablereviews.indexOf($("#selectedproduct").val()), 1)
+                            var pic = $("#reviewprofilepic").attr("src");
+                            $("#reviews").text("User Reviews");
+                            $("#appendreviews").prepend(`<div class="row" style="padding-bottom: 50px; padding-top: 20px;">
+                            <div class="col-2">
+                                <div class="row">
+                                    <img class="img" src="${pic}" alt="profilepic" style="position : static; max-width: 100px; max-height: 100px; border: 2px solid lightgray; border-radius: 100px;">
+                                </div>
+                                <div class="row">
+                                    <p style="position: relative; left: 15%">${review.commenter}</p>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="container">
+                                        <p style="border-bottom : 2px solid lightgray;">Reviewed ${review.product}</p>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 5px;">
+                                    <div class="container sizefull">
+                                        ${review.comment}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="container" style="position: relative; top : 10px;" align="center">
+                                    <img src="/images/thumbs-down.png"style="width : 50px; height: 50px;">
+                                </div>
+                            </div>
+                        </div>`)
+                        },
+                        success : function() {
+                            $("#givereview").css("display", "none");
+                            $("#comment").val("");
+                            var val = $("#thumbsdowncount").html();
+                            $("#thumbsdowncount").html(++val);
+                        },
+                        error : function() {
+                            alert("Error sending review, please try again!");
+                        }
+                    })
+                })
+                $("#chatinvite").click(() => {
+                    socket.emit('pushnotif', {
+                        userfrom : clientuser,
+                        type : "chatinvitation",
+                        userto : "<%= memberDetails[0].username %>"
+                    })
+                    swal({title: "Notification Has Been Sent!", icon:'success'});
+                })
+                $("#showpass").click(() => {
+                    var x = document.getElementById("password");
+                    if (x.type == "password") {
+                        x.type = "text";
+                        $("#showpass").text("Hide Password");
+                    }
+                    else {
+                        x.type = "password";
+                        $("#showpass").text("Show Password");
+                    }
+                })
+                $("#editinfo").click(() => {
+                    if ($("#editinfo").text() == "Edit") {
+                        var x = document.querySelectorAll(".sizefull");
+                        for (var i = 0; i < x.length; i++) {
+                            x[i].disabled = false;
+                        }
+                        $("#editinfo").text("Save Changes");
+                    } else {
+                        var changedData = {
+                            name : $("#fullname").val(),
+                            username : $("#username").val(),
+                            email : $("#email").val(),
+                            password : $("#password").val(),
+                            phone : $("#phone").val()
+                        }
+                        $.ajax({
+                            url : "<%= memberDetails[0].username %>/updateinfo",
+                            type : "POST",
+                            data : changedData,
+                            beforeSend : function() {
+                                $("#loadgif").css("display", "block");
+                                $("#savechangetxt").css("display", "none");
+                                $("#savechangeerrortxt").css("display", "none");
+                            },
+                            complete : function() {
+                                $("#loadgif").css("display", "none");
+                            },
+                            success : function() {
+                                $("#savechangesuccesstxt").css("display", "block");
+                            },
+                            error : function() {
+                                $("#savechangeerrortxt").css("display", "block");
+                            }
+                        })
+                    }
+                })
+            });
+
+            function picupdate(file) {
+                $("#profilepic").attr("src", URL.createObjectURL(file.files[0]))
+                $.ajax({
+                    url : "<%= memberDetails[0].username %>/profilepicupload",
+                    type : "POST",
+                    data: new FormData($('#myform')[0]),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend : function() {
+                        $("#loadgif").css("display", "block");
+                        $("#savechangetxt").css("display", "none");
+                        $("#savechangeerrortxt").css("display", "none");
+                    },
+                    complete : function() {
+                        $("#loadgif").css("display", "none");
+                    },
+                    success : function() {
+                        $("#savechangesuccesstxt").css("display", "block");
+                        $("#userpic").attr("src", URL.createObjectURL(file.files[0]))
+                    },
+                    error : function() {
+                        $("#savechangeerrortxt").css("display", "block");
+                    }
+                })
+            }
+
+            function renderAvailableReviews() {
+                for (var i = 0; i < reviews.length; i++) {
+                    if (reviews[i].commenter == "<%= user.username %>") {
+                        for (var j = 0; j < availablereviews.length; j++) {
+                            if (reviews[i].product == availablereviews[j]) {
+                                availablereviews.splice(availablereviews[j], 1)
+                            }
+                        }
+                    }
+                }
+                $("#selectedproduct").html("");
+                for (var k = 0; k < availablereviews.length; k++) {
+                    $("#selectedproduct").append(`<option>${availablereviews[k]}</option>`)
+                }
+            }
+
+            window.onload = function() {
+                socket.emit('userlisting', {
+                    username : "<%= memberDetails[0].username %>"
+                })
+                socket.emit('userreviews', {
+                    username : "<%= memberDetails[0].username %>"
+                });
+                socket.emit('usertransactions', {
+                    payer : "<%= user.username %>",
+                    seller : "<%= memberDetails[0].username %>"
+                })
+            }
+            socket.on('reviews', function(reviewss) {
+                var up = 0, down = 0;
+                if (reviewss.length == 0) {
+                    $("#reviews").text("No User Reviews!");
+                }
+                for (var i = 0; i < reviewss.length; i++) {
+                    reviews.push(reviewss[i]);
+                    if (reviewss[i].vote == true) {
+                         $("#appendreviews").append(`<div class="row" style="padding-bottom: 50px; padding-top: 20px;">
+                            <div class="col-2">
+                                <div class="row">
+                                    <img class="img" src="/images/profileimages/${reviewss[i].profilePicture}" alt="profilepic" style="position : static; max-width: 100px; max-height: 100px; border: 2px solid lightgray; border-radius: 100px;">
+                                </div>
+                                <div class="row">
+                                    <p style="position: relative; left: 15%">${reviewss[i].commenter}</p>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="container">
+                                        <p style="border-bottom : 2px solid lightgray;">Reviewed ${reviewss[i].product}</p>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 5px;">
+                                    <div class="container sizefull">
+                                        ${reviewss[i].comment}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="container" style="position: relative; top : 10px;" align="center">
+                                    <img src="/images/thumbs-up.png"style="width : 70px; height: 70px;">
+                                </div>
+                            </div>
+                        </div>`);
+                        up++;
+                    } else {
+                        $("#appendreviews").append(`<div class="row" style="padding-bottom: 50px; padding-top: 20px;">
+                            <div class="col-2">
+                                <div class="row">
+                                    <img class="img" src="/images/profileimages/${reviewss[i].profilePicture}" alt="profilepic" style="position : static; max-width: 100px; max-height: 100px; border: 2px solid lightgray; border-radius: 100px;">
+                                </div>
+                                <div class="row">
+                                    <p style="position: relative; left: 15%">${reviewss[i].commenter}</p>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="container">
+                                        <p style="border-bottom : 2px solid lightgray;">Reviewed ${reviewss[i].product}</p>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 5px;">
+                                    <div class="container sizefull">
+                                        ${reviewss[i].comment}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="container" style="position: relative; top : 10px;" align="center">
+                                    <img src="/images/thumbs-down.png"style="width : 50px; height: 50px;">
+                                </div>
+                            </div>
+                        </div>`);
+                        down++;
+                    }
+                }
+                $("#thumbsupcount").html(up);
+                $("#thumbsdowncount").html(down);
+            })
+
+            socket.on('transactions', function(trans) {
+                for (var i = 0; i < trans.length; i++) {
+                    availablereviews.push(trans[i].transaction_items);
+                }
+            })
+
+            socket.on('list', function(list) {
+                var c = 0;
+                if (list.length == 0) {
+                    $("#listings").text("No User Listings!");
+                }
+                while (c < list.length) {
+                    $("#appendlist").append(`<div class="container col-3" style="padding-bottom: 100px;">
+                                        <div class="block2">
+                                            <div class="block2-img wrap-pic-w of-hidden pos-relative">
+                                                <img src="/images/listingImages/${list[c].itemPicture}" alt="${list[c].itemDescription}" class="listpic" style="height : 300px;">
+                                            </div>
+                                            <div class="block2-txt p-t-20">
+                                                <p class="block2-name dis-block s-text3 p-b-5">
+                                                    ${list[c].itemDescription}
+                                                </p>
+                                                <p class="block2-name dis-block s-text3 p-b-5">
+                                                    ${list[c].itemAdditionalDescription}
+                                                </p>
+                                                <span class="block2-price m-text6 p-r-5">$${list[c].itemPrice}</span>
+                                            </div>
+                                        </div>
+                                    </div>`);
+                    c++; //HAHA LOL c++
+                    $("#appendlist").append(`<div class="container col-1" style="padding-bottom: 100px;"></div>`);
+                    $("#appendlist").append(`<div class="container col-3" style="padding-bottom: 100px;">
+                                        <div class="block2">
+                                            <div class="block2-img wrap-pic-w of-hidden pos-relative">
+                                                <img src="/images/listingImages/${list[c].itemPicture}" alt="${list[c].itemDescription}" class="listpic" style="height : 300px;">
+                                            </div>
+                                            <div class="block2-txt p-t-20">
+                                                <p class="block2-name dis-block s-text3 p-b-5">
+                                                    ${list[c].itemDescription}
+                                                </p>
+                                                <p class="block2-name dis-block s-text3 p-b-5">
+                                                    ${list[c].itemAdditionalDescription}
+                                                </p>
+                                                <span class="block2-price m-text6 p-r-5">$${list[c].itemPrice}</span>
+                                            </div>
+                                        </div>
+                                    </div>`);
+                    c++;
+                    $("#appendlist").append(`<div class="container col-1" style="padding-bottom: 100px;"></div>`);
+                    $("#appendlist").append(`<div class="container col-3" style="padding-bottom: 100px;">
+                                        <div class="block2">
+                                            <div class="block2-img wrap-pic-w of-hidden pos-relative">
+                                                <img src="/images/listingImages/${list[c].itemPicture}" alt="${list[c].itemDescription}" class="listpic" style="height : 300px;">
+                                            </div>
+                                            <div class="block2-txt p-t-20">
+                                                <p class="block2-name dis-block s-text3 p-b-5">
+                                                    ${list[c].itemDescription}
+                                                </p>
+                                                <p class="block2-name dis-block s-text3 p-b-5">
+                                                    ${list[c].itemAdditionalDescription}
+                                                </p>
+                                                <span class="block2-price m-text6 p-r-5">$${list[c].itemPrice}</span>
+                                            </div>
+                                        </div>
+                                    </div>`);
+                    c++;
+                    continue;
+                }
+            })
+        </script>
+        <% } %>
+    </body>
+    <% include ../partials/footer %>
+</html>

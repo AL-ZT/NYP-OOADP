@@ -1,0 +1,118 @@
+<head>
+    <meta charset="utf-8">
+    <script src="https://js.braintreegateway.com/web/dropin/1.11.0/js/dropin.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color : black;
+        }
+        form {
+            background-color : lightgray;
+            padding : 20px;
+            border-radius : 6px;
+            border-color : lightblue;
+            border-left : solid #2196F3 5px;
+            border-top : solid #2196F3 5px;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size:25px;
+        }
+        h1 {
+            font-size: 50px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row" style="margin-top: 30px">
+            <div class="col-2">
+            </div>
+            <div class="col-8">
+                <form id="payment-form" action="/checkout/client_checkout" method="POST">
+                    <div style="text-align: center">
+                        <h1 style="margin-bottom:30px"><b>Additional Details</b></h1>
+                    </div>
+                    <div class="form-group">
+                        <label for="fname">
+                            <b>First Name : </b>
+                        </label>
+                        <input type="text" class="form-control" id="fname" aria-describedby="fname" placeholder="Enter your First Name" name="fname"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lname">
+                            <b>Last Name : </b>
+                        </label>
+                        <input type="text" class="form-control" id="lname" aria-describedby="lname" placeholder="Enter your Last Name" name="lname"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">
+                            <b>City : </b>
+                        </label>
+                        <input type="text" class="form-control" id="city" aria-describedby="city" placeholder="Enter your city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">
+                            <b>State : </b>
+                        </label>
+                        <input type="text" class="form-control" id="state" aria-describedby="state" placeholder="Enter your state" name="state" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postalcode">
+                            <b>Postalcode : </b>
+                        </label>
+                        <input type="text" class="form-control" id="postalcode" aria-describedby="postalcode" placeholder="Enter your postalcode"
+                            name="postalcode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="shipping_address">
+                            <b>Address : </b>
+                        </label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="shipping_address" placeholder="Enter shipping address"
+                            name="shipping_address" require>
+                        <small id="shipping_address" class="form-text text-muted">We'll never share your address with anyone else.</small>
+                    </div>
+                    <h1 style="margin-top: 30px">Payment Method</h1>
+                    <div id="dropin-container"></div>
+                    <input style="display:none" id="nonce" name="nonce">
+                    <button class="btn btn-success" style="margin-top: 20px" id="submit-button">Continue with checkout</button>
+                </form>
+            </div>
+            <div class="col-2">
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        var button = document.querySelector('#submit-button');
+        var form = document.querySelector('#payment-form');
+        var token = "<%= token %>";
+        braintree.dropin.create({
+            authorization: token,
+            container: '#dropin-container'
+        }, function (createErr, instance) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                instance.requestPaymentMethod(function (err, payload) {
+                    // Submit payload.nonce to your server
+                    if (err) {
+                        console.log('Error', err);
+                        return;
+                    }
+                    document.querySelector('#nonce').value = payload.nonce;
+                    form.submit();
+                });
+            });
+        });
+    </script>
+</body>

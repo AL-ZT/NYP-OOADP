@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        @media screen and (min-width:993px) {
+            .sectionHeader {
+                padding-top: 100px;
+            }
+
+            .row {
+                padding-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<% include ../partials/header %>
+
+    <body>
+
+        <section class="banner2 bg5 p-b-55">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="sectionHeader">
+                            Compare
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card" style="width:400px">
+                            <div class="card-body">
+                                <h4 class="card-title">Retail Prices</h4>
+                                <p class="card-text">Select parts with standardised retail prices across Singapore</p>
+                                </br>
+                                <a href="/compare/selected_comparetype_retail" class="btn btn-primary">Go here</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                            <div class="card" style="width:400px">
+                                <div class="card-body">
+                                    <h4 class="card-title">Second-Hand Prices</h4>
+                                    <p class="card-text">Select parts with prices based on sellers on this website</p>
+                                    </br>
+                                    <a href="/compare/selected_comparetype_shop" class="btn btn-primary">Go here</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </section>
+        <% include ../partials/footer %>
+    </body>

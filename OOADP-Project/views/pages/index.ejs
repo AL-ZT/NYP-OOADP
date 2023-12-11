@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../partials/header %>
+
+	<head>
+		<style>
+			@media screen and (min-width:993px) {
+				.firstelement {
+					padding-top: 80px;
+				}
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="/slick-1.8.1/slick/slick.css" />
+		<link rel="stylesheet" type="text/css" href="/slick-1.8.1/slick/slick-theme.css" />
+	</head>
+
+	<body class="animsition">
+
+		<!-- Slide1 -->
+		<section class="slide1">
+			<div class="firstelement">
+
+			</div>
+			<div class="wrap-slick1">
+				<div class="slick1">
+					<a href="/selected_browse/type/CPU">
+						<div class="item-slick1 item1-slick1" style="background-image: url(images/carousel/banner1.png);">
+							<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+							</div>
+						</div>
+					</a>
+					<a>
+						<div class="item-slick1 item2-slick1" style="background-image: url(images/carousel/banner3.png);">
+							<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+
+							</div>
+						</div>
+					</a>
+
+					<a>
+						<div class="item-slick1 item3-slick1" style="background-image: url(images/carousel/banner6.jpg);">
+							<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+
+							</div>
+						</div>
+					</a>
+
+					<a>
+						<div class="item-slick1 item3-slick1" style="background-image: url(images/carousel/banner7.png);">
+							<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+
+							</div>
+						</div>
+					</a>
+
+					<a>
+						<div class="item-slick1 item3-slick1" style="background-image: url(images/carousel/banner4.png);">
+							<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+
+							</div>
+						</div>
+					</a>
+
+					<a>
+						<div class="item-slick1 item3-slick1" style="background-image: url(images/carousel/banner2.png);">
+							<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+
+							</div>
+						</div>
+					</a>
+
+
+				</div>
+			</div>
+		</section>
+
+		<section class="banner bg5 p-t-40 p-b-40" style="background-color: #d8d6d7">
+			<div class="container">
+				<div class="row justify-content-left">
+					<div class="col-xs-12">
+						<h1 class="m-b-50">New Listings</h1>
+					</div>
+				</div>
+				<div class="row" id="new_listing">
+					<% listings.forEach(function(item) { %>
+						<div class="block2">
+							<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+								<img src="/images/listingImages/<%= item.itemPicture %>" alt="IMG-PRODUCT" style="height:380px">
+
+								<div class="block2-overlay trans-0-4" style="text-align: center; color:aliceblue">
+									<h3 class="m-t-180">
+										<%= item.itemAdditionalDescription %>
+									</h3>
+									<div class="block2-btn-addcart w-size1 trans-0-4">
+										<!-- Button -->
+										<a href="/product_details/<%= item.ListingID %>">
+											<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+												Show More
+											</button>
+										</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="block2-txt p-t-20">
+								<a href="product-detail.html" class="block2-name dis-block s-text3 p-b-5">
+									<%= item.itemDescription %>
+								</a>
+
+								<span class="block2-price m-text6 p-r-5">
+									SGD $
+									<%= item.itemPrice %>
+								</span>
+							</div>
+						</div>
+						<% }) %>
+				</div>
+			</div>
+		</section>
+
+		<section class="banner bgwhite p-t-60 p-b-60">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-xs-12">
+						<h1 class="m-b-50">Need help building your dream computer?</h1>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-xs-12">
+						<img class="m-b-30" src="images/assets/buildingicon.png" style="width:64px;height:64px" />
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-xs-12">
+						<h3 class="m-b-40">Try out our step by step pc builder here!</h1>
+							<a href="./pc_building/">
+								<button class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+									Get Started
+								</button>
+							</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+		<!-- Back to top -->
+		<div class="btn-back-to-top bg0-hov" id="myBtn">
+			<span class="symbol-btn-back-to-top">
+				<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+			</span>
+		</div>
+
+		<!-- Container Selection1 -->
+		<div id="dropDownSelect1"></div>
+
+
+		<% include ../partials/footer %>
+			<script type="text/javascript" src="/slick-1.8.1/slick/slick.js"></script>
+			<script>
+				$(document).ready(function () {
+					$('#new_listing').slick({
+						slidesToShow: 3,
+						slidesToScroll: 1,
+					});
+				})
+			</script>
+	</body>
+
+</html>

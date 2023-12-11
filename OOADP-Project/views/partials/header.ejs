@@ -1,0 +1,751 @@
+<link rel="icon" type="image/png" href="/images/assets/logo.png" />
+<link rel="stylesheet" type="text/css" href="/stylesheet/vendor/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/fonts/themify/themify-icons.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/fonts/elegant-font/html-css/style.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/vendor/animate/animate.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/vendor/css-hamburgers/hamburgers.min.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/vendor/animsition/css/animsition.min.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/vendor/select2/select2.min.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/vendor/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/vendor/slick/slick.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/vendor/lightbox2/css/lightbox.min.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/css/util.css">
+<link rel="stylesheet" type="text/css" href="/stylesheet/css/main.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+ crossorigin="anonymous">
+<script src="/js/socket.io.js"></script>
+<script src="/js/jquery.min.js"></script>
+
+<body class="animsition">
+	<!-- Header -->
+	<header class="header2">
+		<!-- Header desktop -->
+		<div class="container-menu-header">
+			<div class="wrap_header">
+				<!-- Logo -->
+				<a href="/" class="logo">
+					<!--<img src="images/icons/logo.png" alt="IMG-LOGO">-->
+					<h1>PCHubSG</h1>
+				</a>
+
+				<!-- Menu -->
+				<div class="wrap_menu">
+					<nav class="menu">
+						<ul class="main_menu">
+							<li>
+								<a href="/">Home</a>
+							</li>
+
+							<li>
+								<a href="/browse">Shop</a>
+							</li>
+
+							<li>
+								<a href="/bid">Live Bidding</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+
+				<!-- Header Icon -->
+				<div class="header-icons">
+					<% if (user) { %>
+
+						<div class="dropdown">
+							<a href="#" class="header-wrapicon1 dis-block dropdown-toggle" id="dropdownprofile" data-toggle="dropdown" aria-haspopup="true"
+							 aria-expanded="false">
+
+								<img src="/images/profileimages/" class="header-icon1" alt="ICON" id="userpic" style="border-radius: 10px; width: 27px;">
+								<span class="topbar-child1">
+									<%= user.username %>
+								</span>
+							</a>
+
+							<div class="dropdown-menu m-t-10" aria-labelledby="dropdownprofile">
+								<a href="/create_listing" class="dropdown-item">Create Listing</a>
+								<a class="dropdown-item" href="/modify_listing">Modify Listings</a>
+								<a class="dropdown-item" href="/users/<%= user.username %>">Profile / Account Settings</a>
+								<a class="dropdown-item" href="/bookmarks">Bookmarks</a>
+								<a class="dropdown-item" href="/compare">Compare</a>
+								<a class="dropdown-item" href="/set_budget">Set Budget</a>
+								<a class="dropdown-item" href="/edit_budget">Edit Budget</a>
+								<a class="dropdown-item" href="/logout">Logout</a>
+
+							</div>
+						</div>
+						<% } else { %>
+
+							<a href="/login" class="header-wrapicon1 dis-block">
+								<span class="topbar-child1">
+									Login
+								</span>
+							</a>
+
+							<span class="linedivide1"></span>
+
+							<a href="/register" class="header-wrapicon1 dis-block">
+								<span class="topbar-child1">
+									Register
+								</span>
+							</a>
+							<% } %>
+
+								<% if (user) { %>
+									<span class="linedivide1"></span>
+
+									<div class="header-wrapicon2">
+										<img src="/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+										<span id="shopping_cart_noti" class="header-icons-noti">0</span>
+
+										<!-- Header cart noti -->
+										<div class="header-cart header-dropdown">
+											<ul id="list" class="header-cart-wrapitem">
+
+											</ul>
+
+											<div class="header-cart-buttons" style="margin-top : 20px">
+												<div class="header-cart-wrapbtn">
+													<!-- Button -->
+													<a href="#" id="clearAll" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+														Clear All
+													</a>
+												</div>
+
+												<div class="header-cart-wrapbtn">
+													<!-- Button -->
+													<a href="/checkout" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+														Check Out
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+									<% } %>
+
+										<% if (user) { %>
+
+											<span class="linedivide1"></span>
+
+											<div class="header-wrapicon2">
+												<img src="/images/icons/chat.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+												<span class="header-icons-noti" id="usernum"></span>
+
+												<!-- Header cart noti -->
+												<div class="header-cart header-dropdown">
+													<div class="w3-bar" id="tabs" style="position:relative; right : 20px; bottom : 20px; width: 450px; height : 70px;">
+													</div>
+													<div id="chatboxappend">
+														<div class="container chats" style="height: 370px; width: 350px; overflow-y: auto; display : block; word-wrap: break-word" id="global">
+														</div>
+													</div>
+
+													<div class="container">
+														<div class="row">
+															<div class="col-8">
+																<input type="text" id="message" class="form-control" placeholder="Enter Message..." style="width:100%; border-bottom : 2px solid gray !important;"></input>
+															</div>
+															<div class="col-4">
+																<div class="upload-btn-wrapper" style="position: relative; overflow: hidden; display: inline-block; cursor: pointer;">
+																	<button class="btn" style="padding: 8px 15px; border-radius: 20px; border: 2px solid gray;"><i class="fas fa-paperclip" style="opacity: 0.6;"></i></button>
+																	<form enctype="multipart/form-data" method="POST" action="/chatupload" id="chatfile">
+																		<input type="file" name="myfile" style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0;" accept="image/*" onchange="chatfileupload(this);"/>
+																	</form>
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="header-cart-buttons" style="margin-top : 30px;">
+														<div id="enter" class="header-cart-wrapbtn flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4" style="cursor: pointer; position: relative; left : 100px;">
+															<!-- Button -->
+															Invite User >
+														</div>
+														<div class="container" id="RoomNoDisplay" style="display: none;">
+															<br>
+															<h5 align='center'>Enter Username : </h5>
+															<input type="text" placeholder="Search..." id="RoomNo" class="form-control" style="position:relative; left : 90px; width:50%; border-bottom : 2px solid gray !important;"></input>
+														</div>
+														<div class="container" id="userdisplay" style="display: none; height: 80px; overflow: auto;">
+															<div id="userdisplay2">
+															</div>
+															<div id="sendNotif" class="header-cart-wrapbtn flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4" style="cursor: pointer; position: relative; left: 100px; font-size: 14px;">
+																Send Notification
+															</div>
+														</div>
+														<!-- <div class="container" id="chooseroom" style="display: none; height: 100px; overflow: auto;">
+															<br>
+															<p align='center'>Choose a Room to Invite :</p>
+															<div id="appendroom"></div>
+															<div id="sendNotif" class="header-cart-wrapbtn flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4" style="cursor: pointer; position: relative; left: 100px; font-size: 14px;">
+																Send Notification
+															</div>
+														</div> -->
+													</div>
+												</div>
+											</div>
+
+											<span class="linedivide1"></span>
+
+											<div class="header-wrapicon2">
+												<img src="/images/icons/globe.png" class="header-icon1 js-show-header-dropdown" alt="ICON" onload="loadtabs();notification();loadpic();">
+												<span class="header-icons-noti" id="notifcount">0</span>
+
+												<div class="header-cart header-dropdown" style="height: 400px; overflow: auto;" id="notifbox">
+												</div>
+											</div>
+
+											<% } %>
+
+				</div>
+			</div>
+		</div>
+
+		<!-- Header Mobile -->
+		<div class="wrap_header_mobile">
+			<!-- Logo moblie -->
+			<a href="/" class="logo-mobile">
+				<h1>PCHubSG</h1>
+			</a>
+
+			<!-- Button show menu -->
+			<div class="btn-show-menu">
+				<!-- Header Icon mobile -->
+				<div class="header-icons-mobile">
+					<% if (user) { %>
+						<a href="create_listing" class="header-wrapicon1 dis-block">
+							<span class="topbar-child1">
+								Create Listing
+							</span>
+						</a>
+
+						<span class="linedivide2"></span>
+
+						<a href="#" class="header-wrapicon1 dis-block">
+							<img src="/images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
+							<span class="topbar-child1">
+								<%= user.username %>
+							</span>
+						</a>
+
+						<span class="linedivide2"></span>
+
+						<a href="/logout" class="header-wrapicon1 dis-block">
+							<span class="topbar-child1">
+								Logout
+							</span>
+						</a>
+
+						<% } else { %>
+
+							<a href="/login" class="header-wrapicon1 dis-block">
+								<span class="topbar-child1">
+									Login
+								</span>
+							</a>
+
+							<span class="linedivide2"></span>
+
+							<a href="/register" class="header-wrapicon1 dis-block">
+								<span class="topbar-child1">
+									Register
+								</span>
+							</a>
+							<% } %>
+
+								<!-- <span class="linedivide2"></span>
+
+								<div class="header-wrapicon2">
+									<img src="/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+									<span class="header-icons-noti">0</span>
+
+									
+									<div class="header-cart header-dropdown">
+										<ul class="header-cart-wrapitem">
+											<li class="header-cart-item">
+												<div class="header-cart-item-img">
+													<img src="/images/item-cart-01.jpg" alt="IMG">
+												</div>
+
+												<div class="header-cart-item-txt">
+													<a href="#" class="header-cart-item-name">
+														White Shirt With Pleat Detail Back
+													</a>
+
+													<span class="header-cart-item-info">
+														1 x $19.00
+													</span>
+												</div>
+											</li>
+
+											<li class="header-cart-item">
+												<div class="header-cart-item-img">
+													<img src="/images/item-cart-02.jpg" alt="IMG">
+												</div>
+
+												<div class="header-cart-item-txt">
+													<a href="#" class="header-cart-item-name">
+														Converse All Star Hi Black Canvas
+													</a>
+
+													<span class="header-cart-item-info">
+														1 x $39.00
+													</span>
+												</div>
+											</li>
+
+											<li class="header-cart-item">
+												<div class="header-cart-item-img">
+													<img src="/images/item-cart-03.jpg" alt="IMG">
+												</div>
+
+												<div class="header-cart-item-txt">
+													<a href="#" class="header-cart-item-name">
+														Nixon Porter Leather Watch In Tan
+													</a>
+
+													<span class="header-cart-item-info">
+														1 x $17.00
+													</span>
+												</div>
+											</li>
+										</ul>
+
+										<div class="header-cart-total">
+											Total: $75.00
+										</div>
+
+										<div class="header-cart-buttons">
+											<div class="header-cart-wrapbtn">
+												
+												<a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+													View Cart
+												</a>
+											</div>
+
+											<div class="header-cart-wrapbtn">
+												
+												<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+													Check Out
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+				</div> -->
+
+								<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+									<span class="hamburger-box">
+										<span class="hamburger-inner"></span>
+									</span>
+								</div>
+				</div>
+			</div>
+
+			<!--Shopping Cart Items-->
+			<li id="SCIM" class="header-cart-item" style="display: none">
+				<div class="container">
+					<div class="row">
+						<a href="#" class="header-cart-item-img col-4 removeItemLink">
+								<img src="" alt="IMG" style="height:100%; width:100%">
+						</a>
+						<div class="col-7 align-self-center">
+							<div class="header-cart-item-txt" style="width:100%">
+								<a href="#" class="header-cart-item-name sc_item_name" style="margin-top:auto;margin-bottom:auto">
+									Nixon Porter Leather Watch In Tan
+								</a>
+
+								<span class="header-cart-item-info">
+									1 x $17.00
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+
+
+
+			<!-- Menu Mobile -->
+			<div class="wrap-side-menu">
+				<nav class="side-menu">
+					<ul class="main-menu">
+
+						<li class="item-menu-mobile">
+							<a href="/">Home</a>
+						</li>
+
+						<li class="item-menu-mobile">
+							<a href="product.html">Shop</a>
+						</li>
+
+						<li class="item-menu-mobile">
+							<a href="product.html">Sale</a>
+						</li>
+
+						<li class="item-menu-mobile">
+							<a href="cart.html">Features</a>
+						</li>
+
+						<li class="item-menu-mobile">
+							<a href="blog.html">Blog</a>
+						</li>
+
+						<li class="item-menu-mobile">
+							<a href="about.html">About</a>
+						</li>
+
+						<li class="item-menu-mobile">
+							<a href="contact.html">Contact</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+	</header>
+	<script>
+		var defaultSocket = io();
+	</script>
+		<% if (user) { %>
+			<script>
+				var messageboxid = 'global';
+				var clientuser = '<%= user.username %>'
+				var users = [];
+				var clickeduser;
+				var notifcount = 0;
+				var profilepic = [];
+		
+				function tabs(chat, clickedbutton) {
+					var i;
+					var x = document.getElementsByClassName("chats");
+					for (i = 0; i < x.length; i++) {
+						x[i].style.display = "none"; 
+					}
+					var y = document.getElementsByClassName("tab");
+					for (i = 0; i < y.length; i++) {
+						y[i].style.color = "black";
+						y[i].style.backgroundColor = "white";
+					}
+					document.getElementById(chat).style.display = "block";
+					clickedbutton.style.backgroundColor = "black";
+					clickedbutton.style.color = "white";
+					messageboxid = chat;
+				}
+				
+				function chatfileupload(file) {
+					console.log(file.files[0])
+					$.ajax({
+						url : "/chatupload",
+						type : "POST",
+						data: new FormData($('#chatfile')[0]),
+						cache: false,
+						contentType: false,
+						processData: false,
+						success : function() {
+							var msg = '<img src="/images/chatimages/' + file.files[0].name + '" alt="' + file.files[0].name + '" style="max-width : 300px; max-height : 200px;">';
+							var message = {name : '<%= user.username %>', message : msg, room : messageboxid};
+							$.post('/send', message);
+						}
+					})
+				}
+
+				$("#enter").click(() => {
+					$("#RoomNoDisplay").toggle();
+					$("#RoomNoDisplay").toggleClass('animated fadeIn');
+					$("#userdisplay").toggle();
+					$("#userdisplay").toggleClass('animated fadeIn');
+					roomsocket.emit('userdisplay', {
+						clientuser : clientuser
+					});
+				})
+
+				var socket = io('/Global')
+				var roomsocket = io('/Rooms')
+				$(() => {
+					$("#message").keypress(function (e) {
+						if(e.which == '13') {
+							if ($("#message").val()) {
+								var msg = $("#message").val();
+								if ((msg.startsWith("http://")) || (msg.startsWith("https://"))) {
+									msg = '<a href=' + msg + ' target="_blank">' + msg + '</a>';
+								} else if ((msg.startsWith("www."))) {
+									msg = '<a href="https://' + msg + '" target="_blank">' + msg + '</a>';
+								}	
+								var message = {name : '<%= user.username %>', message : msg, room : messageboxid};
+								$("#message").val('');
+								$.post('/send', message);
+							}
+						}
+					})
+					$("#sendNotif").click(() => {
+						var checkeduser = $(".roomradios:checked").val();
+						if (checkeduser) {
+							socket.emit('pushnotif', {
+								userfrom : clientuser,
+								type : "chatinvitation",
+								userto : checkeduser
+							})
+							swal({title: "Notification Has Been Sent!", icon:'success'});
+						} else {
+							swal({ title : "Notification Not Sent, Please Click on a Room first!", icon: 'error'})
+						}
+					})
+					$("#RoomNo").keydown(function (e) {
+						var value = $("#RoomNo").val().toLowerCase();
+						var valuelength = value.length;
+						var u = document.getElementsByClassName('users');
+						for (var x = 0; x < u.length; x++) {
+							u[x].style.display = "none";
+						}
+						for (var i = 0; i < users.length; i++) {
+							if (users[i].substring(0, valuelength).toLowerCase() == value) {
+								document.getElementById('usersearch' + i).style.display = "block";
+							}
+						}
+					})
+				})
+				socket.on('message', addMessage)
+				socket.on('notifretrieval', printnotif)
+				socket.on('redirecttab', function(data) {
+					roomsocket.emit('fucreateroom', data);
+				})
+				socket.on('loadpic', function(data) {
+					profilepic = data;
+					for (var i = 0; i < data.length; i++) {
+						if (data[i].username == "<%= user.username %>") {
+							$("#userpic").attr("src", `/images/profileimages/${data[i].profilePicture}`)
+							$("#reviewprofilepic").attr("src", `/images/profileimages/${data[i].profilePicture}`)
+						}
+					}
+				})
+				socket.on('loadnotif', loadnotif)
+				defaultSocket.on('addconcurrentuser', Connect)
+				defaultSocket.on('removeconcurrentuser', Disconnect)
+				roomsocket.on('message', addMessage)
+				socket.on('loadchat', loadchat)
+				roomsocket.on('createtab', createtab)
+				socket.on('erroralert', erroralert)
+				roomsocket.on('userdivs', createuserdisplay)
+		
+				function notification() {
+					socket.emit('notification', {
+						user : clientuser
+					})
+				}
+		
+				function loadtabs() {
+					socket.emit('loadtabs', {
+						user : clientuser
+					})
+				}
+				
+				function loadpic() {
+					socket.emit('profilepic', {
+						user : clientuser
+					})
+				}
+
+				function deleteRoom(username, roomnum, button) {
+					$(button).remove();
+					$("#" + roomnum).remove();
+					$.ajax({
+						url : '/delete',
+						type : 'POST',
+						data : {
+							roomId : roomnum
+						},
+						success : function() {
+							var message = {name : '<%= user.username %>', message : `<p>${username} has left the room.</p>`, room : messageboxid}
+							$.post('/send', message);
+						}
+					})
+					$.post('/delete', {
+						roomId : roomnum
+					})
+					roomsocket.emit('leaveroom', {
+						roomId : roomnum
+					});
+				}
+		
+				function printnotif(notifs) {
+					if (notifs.type == "chatinvitation") {
+						$("#notifbox").append(`<div class="container-fluid" style="margin-bottom : 30px;"><p display : inline-block;>You have received a chat invite from ${notifs.userfrom}</p><div class="header-cart-wrapbtn flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4"  style="cursor: pointer; width : 150px; background-color : green; position : relative; top : 5px; left : 20px;" onclick="chataccept('${notifs.userfrom}','${notifs.userto}', '${notifs.notifid}', $(this).parent())">Accept</div><div class="header-cart-wrapbtn flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4"  style="cursor: pointer; width : 150px; background-color : red; float : right; position : relative; bottom : 35px; right : 20px;" onclick="chatdecline('${notifs.notifid}', $(this).parent())">Decline</div></div>`);
+						$("#nonotif").css("display", "none");
+						notifcount++;
+						$("#notifcount").html(notifcount);
+					}
+					else if (notifs.type == "bidding") {
+						$("#notifbox").append(`<div class="container"><button class="btn btn-secondary pull-right hov1 flex-c-m bg4 bo-rad-23 trans-0-4 deleteBtn " type="button" data-id="" onclick="dismissBtn('${notifs.id}', $(this).parent())">Dismiss</button><p>Something has been sent</p></div>`);
+						$("#nonotif").css("display", "none");
+						notifcount++;
+						$("#notifcount").html(notifcount);
+					}
+					else if (notifs[i].type == "chatinvitationaccept") {
+						$("#notifbox").append(`<div class="container"><button class="btn btn-secondary pull-right hov1 flex-c-m bg4 bo-rad-23 trans-0-4 deleteBtn " type="button" data-id="" onclick="dismissBtn('${notifs[i].notifid}', $(this).parent())">Dismiss</button><p>Your Chat Invitation to ${notifs[i].userfrom} has been accepted</p></div>`);
+						$("#nonotif").css("display", "none");
+						notifcount++;
+						$("#notifcount").html(notifcount);
+					}
+				}
+		
+				function loadnotif(notifs) {
+					$("#notifbox").html(`<p style="position: relative; top : 160px; left: 100px; display: inline-block;" id="nonotif">No New Notifications Here!</p>`);
+					notifcount = 0;
+					if (notifs.length != 0) {
+						for (var i = 0; i < notifs.length; i++) {
+							if (notifs[i].type == "chatinvitation") {
+								$("#notifbox").append(`<div class="container-fluid" style="margin-bottom : 30px;"><p style="display : inline-block;">You have received a chat invite from ${notifs[i].userfrom}</p><div class="header-cart-wrapbtn flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4"  style="cursor: pointer; width : 150px; background-color : green; position : relative; top : 5px; left : 20px;" onclick="chataccept('${notifs[i].userfrom}','${notifs[i].userto}', '${notifs[i].notifid}', $(this).parent())">Accept</div><div class="header-cart-wrapbtn flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4"  style="cursor: pointer; width : 150px; background-color : red; float : right; position : relative; bottom : 35px; right : 20px;" onclick="chatdecline('${notifs[i].notifid}', $(this).parent())">Decline</div></div>`);
+								$("#nonotif").css("display", "none");
+								notifcount++;
+								$("#notifcount").html(notifcount);
+							}
+							else if (notifs[i].type == "bidding") {
+								$("#notifbox").append(`<div class="container"><button class="btn btn-secondary pull-right hov1 flex-c-m bg4 bo-rad-23 trans-0-4 deleteBtn " type="button" data-id="" onclick="dismissBtn('${notifs[i].notifid}', $(this).parent())">Dismiss</button><p>Something has been sent</p></div>`);
+								$("#nonotif").css("display", "none");
+								notifcount++;
+								$("#notifcount").html(notifcount);
+							}
+							else if (notifs[i].type == "sold") {
+								$("#notifbox").append(`<div class="container"><button class="btn btn-secondary pull-right hov1 flex-c-m bg4 bo-rad-23 trans-0-4 deleteBtn " type="button" data-id="" onclick="dismissBtn('${notifs[i].notifid}', $(this).parent())">Dismiss</button><p>Your listing ${notifs[i].item} has been purchased by ${notifs[i].userfrom}</p></div>`);
+								$("#nonotif").css("display", "none");
+								notifcount++;
+								$("#notifcount").html(notifcount);
+							}
+							else if (notifs[i].type == "chatinvitationaccept") {
+								$("#notifbox").append(`<div class="container"><button class="btn btn-secondary pull-right hov1 flex-c-m bg4 bo-rad-23 trans-0-4 deleteBtn " type="button" data-id="" onclick="dismissBtn('${notifs[i].notifid}', $(this).parent())">Dismiss</button><p>Your Chat Invitation to ${notifs[i].userfrom} has been accepted</p></div>`);
+								$("#nonotif").css("display", "none");
+								notifcount++;
+								$("#notifcount").html(notifcount);
+							}
+						}
+					}
+				}
+		
+				function loadchat(tabs) {
+					$("#tabs").html("");
+					$("#appendroom").html("");
+					$("#tabs").append(`<button class="tab" onclick="tabs('global', this)" style="color: white; background-color: black; width : 90px; height : 50px; box-shadow : 1px 5px 4px rgba(0, 0, 0, .5);">Global</button>`);
+					for (var i = 0; i < tabs.length; i++) {
+						if (tabs[i].firstuser == clientuser) {
+							$("#tabs").append(`<button class="tab" onclick="tabs('${tabs[i].roomid}', this)" style="color: black; background-color: white; width : 115px; height : 50px; box-shadow : 1px 5px 4px rgba(0, 0, 0, .5);">${tabs[i].lastuser}<span style="position: relative; left: 10px;" onclick="deleteRoom('${tabs[i].firstuser}', '${tabs[i].roomid}', $(this).parent())">X</span></button>`)
+						} else {
+							$("#tabs").append(`<button class="tab" onclick="tabs('${tabs[i].roomid}', this)" style="color: black; background-color: white; width : 115px; height : 50px; box-shadow : 1px 5px 4px rgba(0, 0, 0, .5);">${tabs[i].firstuser}<span style="position: relative; left: 10px;" onclick="deleteRoom('${tabs[i].lastuser}', '${tabs[i].roomid}', $(this).parent())">X</span></button>`)
+						}
+						$("#chatboxappend").append(`<div class="container chats" style="height: 370px; width: 350px; overflow-y : auto; display : none; word-wrap: break-word;" id="${tabs[i].roomid}"></div>`)				
+					}
+				}
+		
+				function addMessage(msg) {
+					var now = new Date();
+					$(`#${msg.room}`).append(`<h5 style="color: cyan"> ${msg.name} </h5><p> ${msg.message}</p><p style="display : inline-block; float : right;"> ` + now.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + `</p><div class="container" style="height: 20px;"></div>`)
+					var box = document.getElementById(`${msg.room}`);
+					box.scrollTop = box.scrollHeight;
+				}
+		
+				function Connect(chatConnections) {
+					$("#usernum").html(chatConnections);
+				}
+		
+				function Disconnect(chatConnections) {
+					$("#usernum").html(chatConnections);
+				}
+		
+				function createtab(data) {
+					var y = document.getElementsByClassName("tab");
+					for (i = 0; i < y.length; i++) {
+						y[i].style.backgroundColor = "white"; 
+						y[i].style.color = "black"; 
+					}
+					if (data.firstuser == clientuser) {
+						$("#tabs").append(`<button class="tab" onclick="tabs('${data.roomid}', this)" style="color: white; background-color: black; width : 115px; height : 50px; box-shadow : 1px 5px 4px rgba(0, 0, 0, .5);">${data.lastuser}<span style="position: relative; left: 10px;" onclick="deleteRoom('${data.firstuser}', '${data.roomid}', $(this).parent())">X</span></button>`);
+					} else {
+						$("#tabs").append(`<button class="tab" onclick="tabs('${data.roomid}', this)" style="color: white; background-color: black; width : 115px; height : 50px; box-shadow : 1px 5px 4px rgba(0, 0, 0, .5);">${data.firstuser}<span style="position: relative; left: 10px;" onclick="deleteRoom('${data.lastuser}', '${data.roomid}', $(this).parent())">X</span></button>`);
+					}
+					$("#chatboxappend").append(`<div class="container chats" style="height: 370px; width: 350px; overflow: auto; display : block; word-wrap: break-word;" id="${data.roomid}"></div>`);
+						document.getElementById(messageboxid).style.display = "none";
+						messageboxid = `${data.roomid}`;
+				}
+		
+				function erroralert(message) {
+					swal({ title : `${message.message}`, icon: 'error'})
+				}
+		
+				function addusertoroom(user) {
+					$("#RoomNoDisplay").toggle();
+					var u = document.getElementsByClassName('users');
+					for (var x = 0; x < u.length; x++) {
+						u[x].style.display = "none";
+					}
+					clickeduser = $(user).text();
+					$("#userdisplay").toggle();
+					$("#chooseroom").toggle();
+					$("#chooseroom").toggleClass('animated fadeIn');
+				}
+		
+				function chataccept(userfrom, userto, notifid, div) {
+					$(div).remove();
+					socket.emit('pushnotif', {
+						userfrom : userto,
+						type : "chatinvitationaccept",
+						userto : userfrom
+					})
+					roomsocket.emit('createroom', {
+						userfrom : userfrom,
+						userto : userto
+					})
+					notifcount--;
+					$("#notifcount").html(notifcount);
+					if (notifcount == 0) {
+						$("#nonotif").css("display", "inline-block");
+					}
+					$.post('/deletenotif', {
+						notifid : notifid
+					})
+				}
+		
+				function chatdecline(notifid, div) {
+					$(div).remove();
+					notifcount--;
+					$("#notifcount").html(notifcount);
+					if (notifcount == 0) {
+						$("#nonotif").css("display", "inline-block");
+					}
+					$.post('/deletenotif', {
+						notifid : notifid
+					})
+				}
+
+				function dismissBtn(notifid, div) {
+					notifcount--;
+					$("#notifcount").html(notifcount);
+					$.ajax({
+                    success: function(result) {
+                        console.log(result.message);
+                        var itemToRemove = div;
+						$(itemToRemove).remove();
+						$.post('/deletenotif', {
+						notifid : notifid
+					})
+                    },
+                    error: function(result){
+                        alert("Unable to delete notification.");
+                        console.log(result.message);
+                    }
+                }); 
+					if (notifcount == 0) {
+						$("#nonotif").css("display", "inline-block");
+					}
+				}
+		
+				function createuserdisplay(members) {
+					$("#userdisplay2").html("");
+					for (var i = 0; i < members.length; i++) {
+						$("#userdisplay2").append(`<div id="usersearch${i}" class="container users" style="display : block;"><label for='${members[i].username}'>${members[i].username}</label>
+													<input type="radio" id='${clientuser}-${members[i].username}' name="nameselect" value='${members[i].username}' class="roomradios" style="float: right;"></div>`);
+						users.push(members[i].username);
+					}
+				}
+			</script>
+			<% } %>
+</body>

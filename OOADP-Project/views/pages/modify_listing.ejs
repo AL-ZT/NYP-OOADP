@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        @media screen and (min-width:993px) {
+            .firstelement {
+                padding-top: 100px;
+            }
+        }
+    </style>
+</head>
+<% include ../partials/header %>
+
+    <body>
+        <section class="banner2 bg5 p-b-55">
+            <form method="post" enctype="multipart/form-data" action="/modify_listing/modify/<%= listing.ListingID %>">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 p-t-50 p-l-20 p-b-20">
+                            <h1 class="firstelement">
+                                Modify Listing
+                            </h1>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 p-t-30 p-l-20 p-r-15 sizefull">
+                            <img id="display" style="height:100%; width:100%" src="/images/listingImages/<%= listing.itemPicture %>" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 p-t-30 p-l-20 p-r-15 sizefull">
+                            <div class="bo4 of-hidden size15 m-b-20 sizefull" style="vertical-align: middle">
+                                <input id="upload" name="fileupload" type="file" class="sizefull s-text7 p-l-22 p-t-10" accept="image/*" class="form-control-file"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-xs-12 p-t-30 p-l-20 p-r-15 sizefull">
+                            <div class="bo4 of-hidden size15 m-b-20">
+                                <input id="description" name="description" type=text class="sizefull s-text7 p-l-22" placeholder="Item Description" value="<%= listing.itemDescription %>"
+                                    required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6 p-t-30 p-l-20 sizefull">
+                            <div class="bo4 of-hidden size15 m-b-20">
+                                <input id="price" name="price" type="number" step="0.01" class="sizefull s-text7 p-l-22 p-r-22" placeholder="Price" value="<%= listing.itemPrice %>"
+                                    required/>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-6 p-t-30 p-l-20 sizefull">
+                            <div class="bo4 of-hidden size15 m-b-20">
+                                <input id="quantity" name="quantity" type="number" min="1" class="sizefull s-text7 p-l-22 p-r-22" placeholder="Quantity"
+                                    value="<%= listing.itemQuantity %>" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 p-t-30 p-l-20 p-r-15 sizefull">
+                            <div class="flex-sb-m flex-w p-b-35">
+                                <div class="flex-w sizefull">
+                                    <div class="rs2-select2 bo4 of-hidden sizefull">
+                                        <select class="selection-2 sizefull" name="type" id="type" required>
+                                            <option></option>
+                                            <option value="Central Processing Unit (CPU)">Central Processing Unit (CPU)</option>
+                                            <option value="Graphics Processing Unit (GPU)">Graphics Processing Unit (GPU)</option>
+                                            <option value="Random Access Memory (RAM)">Random Access Memory (RAM)</option>
+                                            <option value="Motherboard">Motherboard</option>
+                                            <option value="Power Supply Unit (PSU)">Power Supply Unit (PSU)</option>
+                                            <option value="Hard Disk Drives (HDD) / Solid State Drive (SSD)">Hard Disk Drives (HDD) / Solid State Drive (SSD)</option>
+                                            <option value="Cases">Cases</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="typeofgpu" class="sizefull" style="display: none">
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull">
+                                <div class=" rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" name="typeGPU" id="typeGPU">
+                                        <option></option>
+                                        <option>AMD</option>
+                                        <option>NVIDIA</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull" style="display: none" id="nvidiaGPUBox">
+                                <div class="rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" name="nvidiaGPU" id="nvidiaGPU">
+                                        <option></option>
+                                        <% nvidiaGPU.forEach(function(item) { %>
+                                            <option>
+                                                <%- item.model %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull" style="display: none" id="amdGPUBox">
+                                <div class="rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" name="amdGPU" id="amdGPU">
+                                        <option></option>
+                                        <% amdGPU.forEach(function(item) { %>
+                                            <option>
+                                                <%- item.model %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="typeofcpu" class="sizefull" style="display: none">
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull">
+                                <div class=" rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" name="typeCPU" id="typeCPU">
+                                        <option></option>
+                                        <option>AMD</option>
+                                        <option>INTEL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull" style="display: none" id="amdCPUBox">
+                                <div class="rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" name="amdCPU" id="amdCPU">
+                                        <option></option>
+                                        <% amdCPU.forEach(function(item) { %>
+                                            <option>
+                                                <%- item.model %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull" id="intelCPUBox" style="display: none">
+                                <div class="rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" name="intelCPU" id="intelCPU">
+                                        <option></option>
+                                        <% intelCPU.forEach(function(item) { %>
+                                            <option>
+                                                <%- item.model %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 p-t-20 p-l-20 p-r-15 sizefull">
+                            <textarea class="bo4 p-l-22 p-t-10 sizefull" name="additionalDescription" placeholder="Additional Description" rows="5" cols="10"> <%= listing.itemAdditionalDescription %></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2 p-t-30 p-l-20">
+                            <h4 style="height:100%; width:100%; vertical-align: auto">Current Status :</h4>
+                        </div>
+                        <div class="col-8 p-t-30">
+                            <div class="bo4 of-hidden size15 m-b-20">
+                                <input id="status" name="status" type="text" class="sizefull s-text7 p-l-22 p-r-22" value="<%= listing.itemStatus %>"
+                                   readonly required/>
+                            </div>
+                        </div>
+                        <div class="col-2 p-t-30 p-l-20" style="text-align: center">
+                                <button id="change" class="btn btn-danger" style="height:70%; width:100%">Change</button>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-xs-12 p-t-60 p-l-20 p-r-15 size15" style="width:50%">
+                            <button class="flex-c-m bg4 size1 bo-rad-23 hov1 m-text3 trans-0-4" id="submit">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <div id="dropDownSelect1"></div>
+        <div id="dropDownSelect2"></div>
+        <div id="dropDownSelect3"></div>
+        <div id="dropDownSelect4"></div>
+        <div id="dropDownSelect5"></div>
+        <div id="dropDownSelect6"></div>
+        <div id="dropDownSelect7"></div>
+
+        <div id="tempholderfortype" value="<%= listing.itemType %>"></div>
+        <div id="tempholderforbrand" value="<%= listing.itemBrand %>"></div>
+        <div id="tempholderformodel" value="<%= listing.itemModel %>"></div>
+
+        <% include ../partials/footer %>
+            <script type="text/javascript">
+                $("#type").select2({
+                    minimumResultsForSearch: 20,
+                    dropdownParent: $('#dropDownSelect1'),
+                    placeholder: "Type of item",
+                });
+                $("#typeGPU").select2({
+                    minimumResultsForSearch: 20,
+                    dropdownParent: $("#dropDownSelect2"),
+                    placeholder: "Company"
+                });
+                $("#nvidiaGPU").select2({
+                    dropdownParent: $("#dropDownSelect3"),
+                    placeholder: "Select GPU"
+                });
+                $("#amdGPU").select2({
+                    dropdownParent: $("#dropDownSelect4"),
+                    placeholder: "Select GPU"
+                });
+                $("#typeCPU").select2({
+                    minimumResultsForSearch: 20,
+                    dropdownParent: $("#dropDownSelect5"),
+                    placeholder: "Company"
+                });
+                $("#amdCPU").select2({
+                    dropdownParent: $("#dropDownSelect6"),
+                    placeholder: "Select CPU"
+                });
+                $("#intelCPU").select2({
+                    dropdownParent: $("#dropDownSelect7"),
+                    placeholder: "Select CPU"
+                });
+
+                $("#upload").change(function (event) {
+                    $("#display").attr("src", URL.createObjectURL(event.target.files[0]));
+                })
+
+                $("#type").change(() => {
+                    $("#typeofgpu").hide();
+                    $("#typeofcpu").hide();
+                    if ($("#type").val() == "Central Processing Unit (CPU)") {
+                        $("#typeofgpu").hide();
+                        $("#typeofcpu").show();
+                    }
+                    else if ($("#type").val() == "Graphics Processing Unit (GPU)") {
+                        $("#typeofcpu").hide();
+                        $("#typeofgpu").show();
+                    }
+                })
+
+                $("#typeGPU").change(() => {
+                    if ($("#typeGPU").val() == "AMD") {
+                        $("#nvidiaGPUBox").hide();
+                        $("#amdGPUBox").show();
+                    }
+                    else if ($("#typeGPU").val() == "NVIDIA") {
+                        $("#amdGPUBox").hide();
+                        $("#nvidiaGPUBox").show();
+                    }
+                })
+
+                $("#typeCPU").change(() => {
+                    if ($("#typeCPU").val() == "AMD") {
+                        $("#intelCPUBox").hide();
+                        $("#amdCPUBox").show();
+                    }
+                    else if ($("#typeCPU").val() == "INTEL") {
+                        $("#amdCPUBox").hide();
+                        $("#intelCPUBox").show();
+                    }
+                })
+
+                var type = $("#tempholderfortype").attr("value");
+                var brand = $("#tempholderforbrand").attr('value');
+                var model = $("#tempholderformodel").attr('value');
+                $("#type option").each(function () {
+                    if ($(this).val() == type) {
+                        $(this).attr('selected', true);
+                        $("#type").val(type).change();
+                        if (type == "Graphics Processing Unit (GPU)") {
+                            $("#typeGPU option").each(function () {
+                                if ($(this).val() == brand) {
+                                    $(this).attr('selected', true);
+                                    $("#typeGPU").val(brand).change();
+                                }
+                            })
+                            if (brand == "AMD") {
+                                $("#amdGPU option").each(function () {
+                                    if ($(this).val() == model) {
+                                        $(this).attr('selected', true);
+                                        $("#amdGPU").val(model).change();
+                                    }
+                                })
+                            }
+                            else if (brand == "NVIDIA") {
+                                $("#nvidiaGPU option").each(function () {
+                                    if ($(this).val() == model) {
+                                        $(this).attr('selected', true);
+                                        $("#nvidiaGPU").val(model).change();
+                                    }
+                                })
+                            }
+                        }
+                        else if (type == "Central Processing Unit (CPU)") {
+                            $("#typeCPU option").each(function () {
+                                if ($(this).val() == brand) {
+                                    $(this).attr('selected', true);
+                                    $("#typeCPU").val(brand).change();
+                                }
+                            })
+                            if (brand == "AMD") {
+                                $("#amdCPU option").each(function () {
+                                    if ($(this).val() == model) {
+                                        $(this).attr('selected', true);
+                                        $("#amdCPU").val(model).change();
+                                    }
+                                })
+                            }
+                            else if (brand == "INTEL") {
+                                $("#intelCPU option").each(function () {
+                                    if ($(this).val() == model) {
+                                        $(this).attr('selected', true);
+                                        $("#intelCPU").val(model).change();
+                                    }
+                                })
+                            }
+                        }
+                    }
+                });
+
+                $("#change").click(function(e) {
+                    e.preventDefault();
+                    if ($("#status").val() == "Available") {
+                        $("#status").val("Sold");
+                    } else {
+                        $("#status").val("Available");
+                    }
+                })
+
+            </script>
+    </body>
+
+</html>

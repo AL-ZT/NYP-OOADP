@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="/">
+<% include ../partials/header %>
+<body class="animsition">
+
+	<!-- Title Page -->
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<% if (user.adminStatus) { %>
+<div class="row">
+    <div class="col-lg-2" style="margin:auto" >
+        <button type="button" class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4" onclick="location.href='bid/createbid';">
+            Create Bid
+        </button>
+    </div>
+    <div class="col-lg-2" style="margin:auto" >
+        <button type="button" class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4" onclick="location.href='bid/importbid';">
+            Import Bid
+        </button>
+    </div>
+</div>
+<% } else { %>
+    <div class="row">
+            <div class="col-lg-2" style="margin:auto" >
+                <button type="button" class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4" onclick="location.href='bid/createbid';">
+                    Create Bid
+                </button>
+            </div>
+    </div>
+    <% } %>
+    <br>
+    <br>
+    <div class="row">
+            <div class="flex-sb-m flex-w p-b-35 justify-content-end" style="margin:auto;">
+                    <div class="flex-w">
+                        <form action="/bid" method="post">
+                        <div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
+                            <select class="selection-2" name="sortstar">
+                                <option value="stardef">Default</option>
+                                <option value="sorthigh">Sort by highest rating</option>
+                                <option value="sortlow">Sort by lowest rating</option>
+    
+                            </select>
+                        </div>
+                        <div class="rs2-select2  of-hidden w-size12 m-t-5 m-b-5 m-r-10">
+                                <button type="submit" class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4">
+                                    Sort
+                                </button>
+                        </div>
+                        </form>
+                    </div>
+    
+
+                </div>
+    </div>
+<br/>
+<br/>
+<br/>
+	<!-- content page -->
+<!--	<section class="bgwhite p-t-66 p-b-60">
+		<div class="container">
+			<div class="row">
+
+
+			</div>
+		</div>
+	</section>-->
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top bg0-hov" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+		</span>
+	</div>
+
+    <!--MODAL-->
+    <!--
+    <div class="modal fade" id="createPost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="/bid" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Create Bid</h4>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <fieldset class="form-group">
+                            <label for="inputitle">Title</label>
+                            <input type="text" id="inputitle" name="title" class="form-control" placeholder="Bid Title" required="">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label for="inputContent">Content</label>
+                            <textarea id="inputContent" name="desc" rows="4" cols="20" class="form-control" placeholder="Bid Description" required=""></textarea>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label for="inputContent2">Initial Bid</label>
+                            <input type="number" id="inputHighBid" name="highbid" rows="2" cols="20" class="form-control" placeholder="Initial Bid" required=""></input>
+                        </fieldset>
+                        <label class="file" style="width: 100%">
+                            <input type="file" id="image" name="image" multiple>
+                            <span class="file-custom"></span>
+                        </label>
+                        <label for="inputContent2">Categories</label>
+                        <select class="selection-1 form-group" name="category">
+                            <option>GPU</option>
+                            <option>PC Screen</option>
+                            <option>Motherboard</option>
+                        </select>
+                        
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+-->
+
+    
+    <div class="lead">
+        
+        
+                        <!--Dynamic MODAL-->
+    <!--    <div class="modal fade" id="<%=bids.id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="/bid" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel"><%= bids.title %></h4>
+                        </div>
+
+                        <p class="list-group-item-text">
+                            <%= bids.highbid %>
+                        </p>
+
+                        <p class="list-group-item-text">By:
+                            <%= bids.user_id %>
+                        </p>
+                        <div>
+                            Image:
+                            <img style="height:100px; width:100px;" src="images/bidimages/<%= bids.imageName %>">
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <a href="/bid/show/<%= bids.id%>">Go to Webpage</a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    -->
+        <div class="row">
+                <% bids.forEach(function(bids){ %>
+                        <div class="col-sm-12 col-md-6 col-lg-4 p-b-50 mrsmiley"  data-id="<%= bids.id%>">
+							<!-- Block2 -->
+                            <div class=" of-hidden pos-relative">
+                                <a class="list-group-item card" >
+
+                                    <div class="comments card-body t-center"  >
+                                        
+                                            <h4 class="list-group-item-heading">
+                                                <%= bids.title %>
+                                               
+                                            </h4>
+                                            <p class="list-group-item-text">
+                                                <%= bids.desc %>
+                                            </p>
+                
+                                            <p class="list-group-item-text">Category:
+                                                <%= bids.user_id %>
+
+                                            </p>
+                                        
+                                            
+                                    </div>
+                
+                                </a>
+
+                                <div class="block2-overlay trans-0-4 coolmodal" id="<%= bids.imageName1 %>" data-id="<%= bids.id%>" data-cost="<%= bids.highbid %>" data-name="<%= bids.title %>" data-target="#<%= bids.id%>">
+
+                                    <div class="block2-btn-addcart trans-0-4">
+                                        <!-- Button -->
+                                        <form action="/bid" method="delete">
+                                        <!--<button class="btn btn-secondary pull-right hov1 flex-c-m bg4 bo-rad-23 trans-0-4 deleteBtn " type="button" data-id="<%= bids.id%>">Delete</button> -->
+                                        <button class="btn btn-secondary pull-right hov1 flex-c-m bg4 bo-rad-23 trans-0-4" type="button" onclick="window.location.href='/bid/show/<%= bids.id%>'" >Webpage</button>
+                                        </form>        
+
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+                <% }); %>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+	<!-- Container Selection -->
+	<div id="dropDownSelect1"></div>
+    <div id="dropDownSelect2"></div>
+    <% include ../partials/footer %>
+    <script>
+                $(".selection-2").select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $('#dropDownSelect2')
+        });
+        var admin = "<%= user.adminStatus %>";
+        console.log(admin);
+        $('.deleteBtn').click(function() {
+            var bids_id = $(this).data('id');      
+            $.ajax({
+                    url: '/bid/'+bids_id,
+                    type: 'DELETE',
+                    success: function(result) {
+                        console.log(result.message);
+                        var itemToRemove = '.mrsmiley[data-id='+bids_id+']';
+                        $(itemToRemove).remove();
+                    },
+                    error: function(result){
+                        alert("Unable to delete comment.");
+                        console.log(result.message);
+                    }
+                });  
+        });
+
+    </script>
+
+    <script>
+
+        $(".coolmodal").each(function(){
+            var num = $(this).data('id');
+            console.log(num);
+            var name = $(this).attr('id');
+            console.log(name);
+            var cost = $(this).data('cost');
+            console.log(cost);
+            var highbidder = $(this).data('name');
+            console.log(name);
+            $(this).on('click', function(){
+                swal({title:highbidder, text:'Highest bid: '+cost, icon:'/images/bidimages/'+name});
+            });
+        });
+    </script>
+
+</body>
+</html>

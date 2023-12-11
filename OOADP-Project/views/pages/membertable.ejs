@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="/">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link href="/stylesheet/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/stylesheet/css/now-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+    
+
+</head>
+<% include ../partials/header %>
+
+
+
+
+<body class="">
+    <div class="wrapper ">
+      <div class="sidebar" data-color="orange">
+  
+      <br>
+      <br>
+      <br>
+        <div class="sidebar-wrapper">
+          <ul class="nav">
+
+            <li class="active">
+              <a href="/bid/membertable">
+                <i class="now-ui-icons location_map-big"></i>
+                <p>Users</p>
+              </a>
+            </li>
+            <li>
+              <a class="hmmhtml" href="/bid/dashboard">
+                <i class="now-ui-icons users_single-02"></i>
+                <p>Edit bids</p>
+              </a>
+            </li>
+            <li >
+              <a href="/bid/dashboard">
+                <i class="fa fa-file"></i>
+                <p>Table List</p>
+              </a>
+            </li>
+            <li class="">
+                <a href="/bid/importbid">
+                  <i class="fa fa-file"></i>
+                  <p>Import Bid</p>
+                </a>
+              </li>
+              <li class="">
+                  <a href="/bid/bidhistory">
+                    <i class="now-ui-icons  location_map-big"></i>
+                    <p>Bid History</p>
+                  </a>
+                </li>
+          </ul>
+        </div>
+      </div>
+      <div class="main-panel">
+  
+        <div class="panel-header panel-header-sm">
+        </div>
+        <div class="content">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title"> Users Table</h4>
+                </div>
+                <div class="card-body">
+                  <div class="">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th>
+                          Name
+                        </th>
+                        <th>
+                          Username
+                        </th>
+                        <th>
+                          Email
+                        </th>
+                        <th>
+                            Phone
+                          </th>
+                        <th class="text-right">
+                            Button
+                          </th>
+                      </thead>
+                      <tbody>
+
+                    
+                        <% members.forEach(function(members){ %>
+                            <form>
+                        <tr class="mrsmiley" data-id="">
+                            <td>
+                                    <%= members.name %> 
+                            </td>
+                            <td>
+                                    <%= members.username %> 
+                          </td>
+                            <td>
+                                    <%= members.email %> 
+                            </td>
+                            <td>
+                                    <%= members.phone %> 
+                            </td>
+                            <td class="text-right">
+                                    <button class="btn btn-secondary pull-right hov1 flex-c-m bg4 bo-rad-23 trans-0-4 deleteBtn " type="button" data-id="">Delete</button>
+                            </td>
+                        </tr>
+                    </form>
+                        <% }); %>
+                    
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+  
+      </div>
+    </div>
+    <% include ../partials/footer %>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<style>
+		@media screen and (min-width:993px) {
+			.firstelement {
+				padding-top: 100px;
+			}
+		}
+	</style>
+</head>
+<% include ../partials/header %>
+
+	<body class="animsition">
+		<section class="banner bg5 p-t-40 p-b-40">
+			<div class="container">
+				<div class="row">
+					<h1 class="firstelement p-l-10">
+						Your Budget
+					</h1>
+				</div>
+				<hr>
+				<div class="row">
+					<% budget.forEach((budget) => { %>
+						<div class="col-xs-12 p-t-30 p-l-20 p-r-15 sizefull">
+							
+										
+									<h4 class="p-1-10 m-b-20">Amount: $ <br><%= budget.budgetAmt %></h4>							
+									<h6 class="p-l-10 p-b-10">Date Generated : <%= budget.budgettedAt %></h6>
+									<a href="/edit_budget/modify/<%= budget.budgetID %>"><button class="btn btn-info" style="width:49%; left:0%">Edit</button></a>
+									<a href="/edit_budget/delete/<%= budget.budgetID %>"><button class="btn btn-danger" style="width:49%; right:0%">Delete</button></a>
+								
+							
+						</div>
+					<% }); %>
+				</div>
+			
+
+
+
+		</section>
+		<!-- Back to top -->
+		<div class="btn-back-to-top bg0-hov" id="myBtn">
+			<span class="symbol-btn-back-to-top">
+				<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+			</span>
+		</div>
+
+		<!-- Container Selection1 -->
+
+
+		<% include ../partials/footer %>
+	</body>
+
+
+</html>

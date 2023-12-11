@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+    <base href="/">
+	
+	<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        var currentbid = "<%= bids.highbid %>";
+        console.log(currentbid);
+            function validateForm() {
+                var x = document.forms["myForm"]["bidsupdate"].value;
+                console.log(x);
+                if (x < currentbid) {
+                    alert("Please enter higher value!");
+                    return false;
+                }
+            }
+            </script>
+    <style>
+        .card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 505px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.stars-outer {
+  position: relative;
+  display: inline-block;
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-outer::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #ccc;
+}
+
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #f8ce0b;
+}
+    </style>
+<% include ../partials/header %>
+<body class="animsition">
+
+	<!-- Title Page -->
+	<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(images/heading-pages-06.jpg);">
+		<h2 class="l-text2 t-center">
+			Bidding Page
+		</h2>
+	</section>
+
+	<!-- content page -->
+
+
+        
+
+<br/>
+<br/>
+<br/>
+<!--Modal 1-->
+
+<!--
+<div class="card" style = "width:515px; height: 505px; margin:auto;">
+        <img src="/images/bidimages/<%= bids.imageName %>" alt="Avatar" style="width:500px; height:500px;">
+        <div class="container">
+          <h4><b><%= bids.highbid %></b></h4> 
+          <p><%= bids.title %></p> 
+        </div>
+</div>
+-->
+<div class="container bgwhite p-t-35 p-b-80">
+		<div class="flex-w flex-sb">
+				<div class="w-size13 p-t-30 respon5">
+						<div class="wrap-slick3 flex-sb flex-w">
+							<div class="wrap-slick3-dots"></div>
+							<% if (bids.imageName1 != bids.imageName2) { %>
+							<div class="slick3">
+								<div class="item-slick3" data-thumb="/images/bidimages/<%= bids.imageName1 %>">
+									<div class="wrap-pic-w">
+										<img id="one" src="/images/bidimages/<%= bids.imageName1 %>"  style="height:500px;width:500px;"alt="IMG-PRODUCT">
+									</div>
+								</div>
+		
+								<div class="item-slick3" data-thumb="/images/bidimages/<%= bids.imageName2 %>">
+									<div class="wrap-pic-w">
+										<img id="two" src="/images/bidimages/<%= bids.imageName2 %>" alt="IMG-PRODUCT">
+									</div>
+								</div>
+		
+								<div class="item-slick3" data-thumb="/images/bidimages/<%= bids.imageName3 %>">
+									<div class="wrap-pic-w">
+										<img id="three" src="/images/bidimages/<%= bids.imageName3 %>" alt="IMG-PRODUCT">
+									</div>
+								</div>
+							</div>
+							<% } else { %>
+								<div class="slick3">
+										<div class="item-slick3" data-thumb="/images/bidimages/<%= bids.imageName1 %>">
+											<div class="wrap-pic-w">
+												<img id="one" src="/images/bidimages/<%= bids.imageName1 %>"  style="height:500px;width:500px;"alt="IMG-PRODUCT">
+											</div>
+										</div>
+								</div>
+								<% } %>
+						</div>
+					</div>
+
+			<div class="w-size14 p-t-30 respon5">
+				<h4 class="product-detail-name m-text16 p-b-13">
+					<%= bids.title %>
+				</h4>
+				
+				<form action="/bid/show/<%= bids.id%>" onsubmit ="return validateForm(); " method="post" name ="myForm" >
+
+				<% if (trufalse) { %>
+					<input class="s-text7 bg3 w-full p-b-5" type="text" name="itsbool" id="itsbool"  value="YES 20% BONUS! &#10004;">
+
+				<% } else { %>
+
+					<input class="s-text7 bg3 w-full p-b-5" type="text" name="itsbool" id="itsbool" value="NO 20% BONUS! &#10007;" >
+	
+				<% } %>
+					  <div class="sony">
+						  <div class="stars-outer">
+							<div class="stars-inner" id="wtf"></div>
+						  </div>
+						  
+						  <span class="number-rating" id="rofl"></span>
+					</div>
+				<span class="m-text17">
+                    <%= bids.highbid %>
+				</span>
+
+				<p class="s-text8 p-t-10">
+					<%= bids.category %>
+				</p>
+
+				<!--  -->
+				<div class="p-t-33 p-b-60">
+					
+
+			
+
+					<div class="flex-r-m flex-w p-t-10">
+						<div class="w-size16 flex-m flex-w">
+							<div class="flex-w bo5 of-hidden m-r-22 m-t-10 m-b-10">
+
+
+								<input class="s-text7 bg6 w-full p-b-5" type="number" name="bidsupdate" id="bidsupdate" placeholder="Eg. 888" required>
+								<input class="s-text7 bg3 w-full p-b-5" type="number" name="starrating" id="starrating" placeholder="Enter rating" required>
+								
+							</div>
+
+							<div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
+                                <!-- Button -->
+                            
+								<button type = "submit" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+									Input bid
+                                </button>
+                            </form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<!--  -->
+				<div class="wrap-dropdown-content bo6 p-t-15 p-b-14 active-dropdown-content">
+					<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
+						Person with the highest bid
+
+					</h5>
+
+					<div class="dropdown-content dis-none p-t-15 p-b-23">
+						<p class="s-text8">
+							<%= bids.highbidname %>
+						</p>
+					</div>
+				</div>
+
+				<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
+					<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
+						Item Description
+
+					</h5>
+
+					<div class="dropdown-content dis-none p-t-15 p-b-23">
+						<p class="s-text8">
+							<%= bids.desc %>
+						</p>
+					</div>
+				</div>
+
+				<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
+					<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
+						Additional Description
+
+					</h5>
+
+					<div class="dropdown-content dis-none p-t-15 p-b-23">
+						<p class="s-text8">
+							This bid is created at <%= bids.createdAt %>
+						</p>
+					</div>
+				</div>
+
+				<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
+					<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
+						Countdown Timer
+
+					</h5>
+
+					<div class="dropdown-content dis-none p-t-15 p-b-23">
+						<p class="s-text8" id="uniqueID">
+							
+						</p>
+					</div>
+				</div>
+				<div class="container mt-5">
+
+				  </div>
+			</div>
+		</div>
+	</div>
+<br/>
+<br/>
+<br/>
+<!--
+<div class="col-lg-2" style="margin:auto" >
+        <button type="button" class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4" data-toggle="modal" data-target="#updateBid">
+            Update Bid
+        </button>
+    </div>
+-->
+    <!--MODAL-->
+<!--
+    <div class="modal fade" id="updateBid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="/bid/show/<%= bids.id%>" onsubmit ="return validateForm(); " method="post" name ="myForm" >
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">Update Bid</h4>
+                        </div>
+    
+                        <div class="modal-body">
+    
+                            <fieldset class="form-group">
+                                <label for="inputitle">Update Bid</label>
+                                <input type="number" name="bidsupdate" id="bidsupdate"  class="form-control" placeholder="Bid Update" required="">
+                            </fieldset>
+  
+                            
+    
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Input Bid</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    -->
+        <br/>
+        <br/>
+		<br/>
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top bg0-hov" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+		</span>
+	</div>
+
+	<!-- Container Selection -->
+	<div id="dropDownSelect1"></div>
+	<div id="dropDownSelect2"></div>
+	<script>
+		var dateTime = "<%= bids.datetimer %>";
+		
+		console.log(dateTime.substr(4,20));
+		// Set the date we're counting down to
+		var countDownDate = new Date(dateTime.substr(4,20)).getTime();
+		var now = new Date().getTime();
+		var distance = countDownDate - now;
+		console.log(distance);
+		if (distance > 0) {
+			// Update the count down every 1 second
+			var x = setInterval(function() {
+			
+				// Get todays date and time
+				var now = new Date().getTime();
+				var username = "<%= bids.highbidname %>";
+				var bid_id = "<%= bids.id %>";
+				var bid_title = "<%= bids.title %>";
+				var bid_created = "<%= bids.created %>";
+				// Find the distance between now an the count down date
+				var distance = countDownDate - now;
+				
+				// Time calculations for days, hours, minutes and seconds
+				var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+				var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+				
+				// Output the result in an element with id="demo"
+				document.getElementById("uniqueID").innerHTML = days + "d " + hours + "h "
+				+ minutes + "m " + seconds + "s ";
+				
+				// If the count down is over, write some text 
+
+				if (distance < 0) {
+					$.post('/bidnotif' ,{
+						type: "bidding",
+						username: username
+					});
+					$.post('/bid/bidhistory', {
+						bid_username: username,
+						bid_id: bid_id,
+						bid_title: bid_title,
+						bid_created
+					});
+					clearInterval(x);
+					document.getElementById("uniqueID").innerHTML = "EXPIRED";
+				}
+			}, 1000);
+		}
+		
+		var total="<%= bids.startotal %>";
+		var totalcount="<%= bids.starcount %>";
+		var num = (total/totalcount);
+		var res = Math.round(num * 100) / 100
+		console.log(res);
+    document.addEventListener('DOMContentLoaded', getRatings);
+
+    function getRatings() {
+        const starPercentage = (res / 5) * 100;
+
+        const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+
+		document.querySelector('#wtf').style.width = starPercentageRounded;
+		
+        document.querySelector(`#rofl`).innerHTML = res;
+    
+    }
+		</script>
+    <% include ../partials/footer %>
+</body>
+</html>

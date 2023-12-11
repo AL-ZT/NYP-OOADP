@@ -1,0 +1,52 @@
+<html>
+
+<head>
+</head>
+<body>
+    <h1 style="color:lightcoral">PCHubSG</h1>
+    <br>
+    <h3>Thank you for shopping with us <%= user %>! Please keep this receipt as prove of your purchase.</h3>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <h3>Receipt No : <%= receiptno %></h3>
+    <h3>Transaction ID : <%= transactionID %></h3>
+    <h3>Date Purchased : <%= datepurchased %></h3>
+    <h3>Payent Method : <%= paymentMethod %></h3>
+    <br>
+    <u><h2>Items Purchased</h2></u>
+    <div style="width:100%">
+            <div style="display:inline-block; width:40%">
+                <u><h3>Item</h3></u>
+            </div>
+            <div style="display:inline-block; width:20%; text-align: center">
+            <u><h3>Quantity</h3></u>
+            </div>
+            <div style="display:inline-block; width:20%; text-align: center">
+                <u><h3>Price</h3></u>
+            </div>
+            
+        </div>
+    <% items.forEach(function(item) { %>
+        <div style="width:100%">
+            <div style="display:inline-block; width:40%">
+                <h3><%= item.description %></h3>
+            </div>
+            <div style="display:inline-block; width:20%; text-align: center">
+                <h3><%= item.quantity %></h3>
+            </div>
+            <div style="display:inline-block; width:20%; text-align: center">
+                <h3>$<%= item.price %></h3>
+            </div>
+        </div>
+    <% }) %>
+    <br>
+    <div>
+        <h2>Grand Total : $<%= grandtotal %></h2>
+    </div>
+    <br>
+    <hr>
+</body>
+
+</html>

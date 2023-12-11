@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="/">
+
+<head>
+    <style>
+        @media screen and (min-width:993px) {
+            .sectionHeader {
+                padding-top: 100px;
+            }
+        }
+    </style>
+</head>
+
+<% include ../partials/header %>
+
+    <body>
+        <section class="banner2 bg5 p-b-55">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="sectionHeader">
+                            Details
+                        </h1>
+                    </div>
+                </div>
+                <div class="flex-w flex-sb">
+                    <div class="w-size13 p-t-30 respon5">
+                        <div class="wrap-slick3 flex-sb flex-w">
+                            <div class="wrap-slick3-dots"></div>
+
+                            <div class="slick3">
+                                <div class="item-slick3" data-thumb="images/listingImages/<%= details.itemPicture %>">
+                                    <div class="wrap-pic-w">
+                                        <img src="images/listingImages/<%= details.itemPicture %>" alt="IMG-PRODUCT">
+                                    </div>
+                                </div>
+
+                                <div class="item-slick3" data-thumb="images/listingImages/<%= details.itemPicture %>">
+                                    <div class="wrap-pic-w">
+                                        <img src="images/listingImages/<%= details.itemPicture %>" alt="IMG-PRODUCT">
+                                    </div>
+                                </div>
+
+                                <div class="item-slick3" data-thumb="images/listingImages/<%= details.itemPicture %>">
+                                    <div class="wrap-pic-w">
+                                        <img src="images/listingImages/<%= details.itemPicture %>" alt="IMG-PRODUCT">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-size14 p-t-30 respon5">
+                        <h4 class="product-detail-name m-text16 p-b-13">
+                            <%= details.itemDescription %>
+                        </h4>
+                        <span class="m-text17">
+                            $
+                            <%= details.itemPrice %>
+                        </span>
+
+                        <p class="s-text8 p-t-10">
+                            <%= details.itemQuantity %>
+                                left.
+                        </p>
+
+                        <h4 class="product-detail-name m-text16 p-b-13">
+                            <%= details.itemAdditionalDescription %>
+                        </h4>
+
+                        <h4 class="product-detail-name m-text16 p-b-13">
+                            <%= details.itemBrand %>
+                                <%= details.itemModel %>
+                        </h4>
+                        <form>
+                            <div class="p-t-33 p-b-60">
+                                <div class="flex-r-m flex-w p-t-10">
+                                    <div class="w-size16 flex-m flex-w">                                        
+                                        <div class="flex-w bo5 of-hidden m-r-22 m-t-10 m-b-10">
+
+                                            <button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
+                                                <i class="fs-12 fa fa-minus" aria-hidden="true"></i>
+                                            </button>
+
+                                            <input class="size8 m-text18 t-center num-product" min="1" max="<%= details.itemQuantity %>" type="number" name="quantity" id="addtocartquantity" value="1">
+
+                                            <button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
+                                                <i class="fs-12 fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
+                                            <!-- Button -->
+                                            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" id="addtocart" onclick="addToCart()">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <p class="s-text8 p-t-10">
+                            Date Posted:
+                            <%= details.itemListingDate %>
+                        </p>
+                        <p id="listingid" style="display: none">
+                            <%= details.ListingID %>
+                        </p>
+
+                        <a href="/users/<%= details.username %>" class="btn btn-primary">Go to
+                            <%= details.username %>'s profile</a>
+                    </div>
+                </div>
+        </section>
+
+        <% include ../partials/footer %>
+    </body>
+    <script>
+        function addToCart() {
+            id = $("#listingid").text()
+            id = id.trim();
+            //console.log(id);
+            quantity = $("#addtocartquantity").val();
+            //console.log(quantity);
+            $.ajax({
+                url: "/shopping_cart/add/" + id + "/" + quantity,
+                type: "POST",
+            }).then(result => {
+                if (result == "OK") {
+                    showItemsInCart();
+                    return "OK";
+                } else if (result == "NOT OK") {
+                    return "NOT OK"
+                }
+            });
+        }
+
+        /* function addToCart(id, quantity) {
+            $.ajax({
+                url: "/shopping_cart/add/" + id + quantity,
+                type: "POST",
+            }).then(result => {
+                console.log(result);
+                if (result == "OK") {
+                    alert("Added Successfully");
+                    showItemsInCart();
+                } else if (result == "NOT OK") {
+                    alert("Already in cart");
+                }
+            });
+        }
+
+        $(document).on('click', '#addtocart', function () {
+            addToCart($(this).val());
+        }); */        
+
+    </script>

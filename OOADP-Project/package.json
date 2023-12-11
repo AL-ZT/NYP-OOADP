@@ -1,0 +1,42 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "braintree": "^2.12.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.6.1",
+    "email-templates": "^4.0.1",
+    "express": "^4.16.3",
+    "express-recaptcha": "^4.0.2",
+    "express-session": "^1.15.6",
+    "express-session-sequelize": "^1.1.0",
+    "file-type": "^8.0.0",
+    "fs": "0.0.1-security",
+    "moment": "^2.22.2",
+    "morgan": "^1.9.0",
+    "multer": "^1.3.0",
+    "mysql2": "^1.5.3",
+    "node-sass-middleware": "^0.11.0",
+    "nodemailer": "^4.6.7",
+    "npm": "^6.2.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "paypal-rest-sdk": "^1.8.1",
+    "sequelize": "^4.37.10",
+    "sequelize-transforms": "^2.0.0",
+    "socket.io": "^2.1.1",
+    "sync-each": "^1.0.1",
+    "tedious": "^2.6.1"
+  }
+}

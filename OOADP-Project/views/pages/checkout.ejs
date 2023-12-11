@@ -1,0 +1,218 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<% include ../partials/header %>
+
+    <head>
+        
+        <style>
+            @media screen and (min-width:993px) {
+                .firstelement {
+                    padding-top: 100px;
+                }
+            }
+            html {
+                overflow: hidden;
+            }
+            body {
+                overflow: scroll;
+            }
+        </style>
+    </head>
+
+    <body class="animsition" >
+        <section class="bgwhite p-t-55 p-b-65 firstelement">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>
+                            <i>Checkout Page</i>
+                        </h1>
+                        <hr>
+                    </div>
+                    <div id="empty" class="container" style="display: none">
+                        <div class="row m-t-100 m-b-100">
+                            <div class="col-xs-12" style="text-align: center; width:100%">
+                                <h1 class="p-2">SHOPPING CART IS EMPTY</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tablediv" class="container-table-cart pos-relative">
+                        <div class="wrap-table-shopping-cart bgwhite">
+
+                            <table id="table" class="table-shopping-cart">
+                                <tr class="table-head">
+                                    <th class="column-1"></th>
+                                    <th class="column-2">Product</th>
+                                    <th class="column-2">Price</th>
+                                    <th class="column-2">Quantity</th>
+                                    <th class="column-2">Total</th>
+                                    <th class="column-5">Delete</th>
+                                </tr>
+
+                                <tr id="template" class="table-row">
+                                    <td class="column-1">
+                                        <div class="cart-img-product b-rad-4 o-f-hidden">
+                                            <img src="">
+                                        </div>
+                                    </td>
+                                    <td class="column-2 description"></td>
+                                    <td class="column-2 price"></td>
+                                    <td class="column-2 quantity"></td>
+                                    <td class="column-2 total"></td>
+                                    <td class="column-5">
+                                        <a value="" class="removeItem">
+                                            <button class="btn btn-danger">Remove</button>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <div class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
+                                <div class="flex-w flex-m w-full-sm">
+                                    <h4>Grand Total : SGD $
+                                        <span id="grand_total"></span>
+                                    </h4>
+                                </div>
+                                    <div class="flex-w flex-m w-full-sm">
+                                        <h4 id='budgetAmt'>Your Budget : SGD $ <% if (budget != undefined) { %>
+                                            <%= budget.budgetAmt %>
+                                            <% } %>
+                                        </h4>
+                                    </div>    
+                                
+
+                                <%- captcha %>
+
+                                    <div class="size10 trans-0-4 m-t-10 m-b-10">
+                                        <!-- Button -->
+                                        <a id="checkoutbtn">
+                                            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" id="checkoutbtn">
+                                                Checkout
+                                            </button>
+                                            
+                                        </a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Choose Payment Method</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="/checkout/payment_creditcard"><img src="/images/assets/creditcards.jpg" style="height:200px; width:100%"></a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="/checkout/payment_paypal"><img src="https://edge.alluremedia.com.au/m/g/2018/06/PayPal-Logo.jpg" style="height:200px; width:100%"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <% include ../partials/footer %>
+            <script>
+                
+                function displayShoppingCart(items) {
+                    if (items == "EMPTY") {
+                        $("#tablediv").hide();
+                        $("#empty").show();
+                        showItemsInCart();
+                    } else {
+                        items.forEach(function (item) {
+                            var clone = $("#template").clone();
+                            clone.removeAttr("id");
+                            var clone_img = clone.find("img");
+                            var clone_a = clone.find("a");
+                            clone_a.attr("value", item[0].ListingID);
+                            clone_img.attr("src", "images/listingImages/" + item[0].itemPicture);
+                            clone.find(".description").html(item[0].itemDescription);
+                            clone.find(".price").html("SGD $" + item[0].itemPrice);
+                            clone.find(".quantity").html(item[1]);
+                            clone.find(".total").html("SGD $" + item[0].itemPrice);
+                            clone.find(".removeItem").attr("value", item[0].ListingID);
+                            $("#table").append(clone);
+                        });
+                        $(".table-row").show();
+                        $("#template").hide();
+                        calculateAndDisplayGrandTotal(items);
+                        showItemsInCart();
+                    }
+                }
+                
+                
+               
+                function calculateAndDisplayGrandTotal(items) {
+                    var total = 0;
+                    items.forEach(function (item) {
+                        total += item[0].itemPrice * item[1];
+                    });
+                    $("#grand_total").html(total);
+                }
+                function clearItems() {
+                    $("tbody").children().slice(2).remove();
+                }
+                $(document).ready(function () {
+                    $.get({
+                        url: "/shopping_cart/show",
+                        success: function (data) {
+                            displayShoppingCart(data);
+                        }
+                    });
+                });
+                $(document).on('click', '.removeItem', function () {
+                    $.post({
+                        url: "/shopping_cart/remove/" + $(this).attr("value")
+                    }).then(function (res) {
+                        if (res == "OK") {
+                            $.get({
+                                url: "/shopping_cart/show",
+                                success: function (data) {
+                                    clearItems();
+                                    displayShoppingCart(data);
+                                }
+                            });
+                        }
+                    })
+                })
+               
+                $("#checkoutbtn").click(function () {
+                    var recaptcha = $("#g-recaptcha-response").val();
+                    var budgetAmt = parseFloat($("budgetAmt"));
+                    var spending = $("#grand_total");
+                   
+                    if (recaptcha === "") {
+                        alert("Please check the recaptcha");
+                    }
+                    else if(budgetAmt < spending){
+                        alert("Your budget is too low")
+                    }
+                    else {
+                        $("#exampleModalLong").modal('toggle');
+                    }
+                });
+                
+            </script>
+    </body>
+
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <base href="/">
+    
+
+    <style>
+        .card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 505px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+    </style>
+<% include ../partials/header %>
+<body class="animsition">
+
+	<!-- Title Page -->
+	<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(images/heading-pages-06.jpg);">
+		<h2 class="l-text2 t-center">
+			Bidding Page
+		</h2>
+	</section>
+
+	<!-- content page -->
+
+
+
+
+
+  
+        
+                        <div class="col-md-6 p-b-30" style="margin:auto;">
+                                <form action="/bid/createbid" method="post" enctype="multipart/form-data">
+                                <h4 style="text-align:center;" class="m-text26 p-b-36 p-t-15">
+                                    Create Auction Post
+                                </h4>
+        
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="title" placeholder="Full Title">
+                                </div>
+        
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input class="sizefull s-text7 p-l-22 p-r-22" type="number" name="highbid" placeholder="Starting Auction Capital">
+                                </div>
+        
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input class="sizefull s-text7 p-l-22 p-r-22" type="file" name="image" placeholder="Email Address" multiple required>
+                                </div>
+
+                                <div class="flex-w">
+                                            <div class="rs2-select2 bo4 of-hidden size15 m-b-20">
+                                                <select class="selection-2 sizefull" name="category">
+                                                        <option>GPU</option>
+                                                        <option>PC Screen</option>
+                                                        <option>Motherboard</option>
+                                                </select>
+                                            </div>
+                
+            
+                                </div>
+                                
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input class="sizefull s-text7 p-l-22 p-r-22"type="datetime-local" name="datetimer">
+                                </div>
+                                
+
+                                <textarea class="dis-block s-text7 size20 bo4 p-l-22 p-r-22 p-t-13 m-b-20" name="desc" placeholder="Auction Description"></textarea>
+        
+                                <div class="w-size25">
+                                    <!-- Button -->
+                                    <button type="submit" class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+                                        Post Auction
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+
+        
+
+<br/>
+<br/>
+<br/>
+
+
+<br/>
+<br/>
+<br/>
+
+        <br/>
+        <br/>
+		<br/>
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top bg0-hov" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+		</span>
+	</div>
+
+	<!-- Container Selection -->
+	<div id="dropDownSelect1"></div>
+    <div id="dropDownSelect2"></div>
+    <% include ../partials/footer %>
+    <script type="text/javascript">
+
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect2')
+		});
+	</script>
+</body>
+</html>

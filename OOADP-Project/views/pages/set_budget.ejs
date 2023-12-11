@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        @media screen and (min-width:993px) {
+            .firstelement {
+                padding-top: 100px;
+            }
+        }
+    </style>
+</head>
+<% include ../partials/header %>
+
+    <body>
+        <section class="banner2 bg5 p-b-55">
+            <form method="POST" action="/set_budget/">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 p-t-50 p-l-20 p-b-20" style="align-items: center">
+                            <h1 class="firstelement">
+                                Set Budget
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 p-t-30 p-l-20 p-r-15 sizefull">
+                            <div class="bo4 of-hidden size15 m-b-20">
+                                <input id="budget" name="budget" type="number" step="0.01" class="sizefull s-text7 p-l-22" placeholder="Please input a budget amount." required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-xs-12 p-t-60 p-l-20 p-r-15 size15" style="width:50%">
+                            <button class="flex-c-m bg4 size1 bo-rad-23 hov1 m-text3 trans-0-4" id="submit" >
+                                Set
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <% include ../partials/footer %>
+            
+    </body>
+
+</html>

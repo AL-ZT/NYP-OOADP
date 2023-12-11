@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        @media screen and (min-width:993px) {
+            .sectionHeader {
+                padding-top: 100px;
+            }
+
+            .row {
+                padding-bottom: 20px;
+            }
+        }
+
+        .listviewitem {
+            height: 15px;
+        }
+    </style>
+</head>
+<% include ../partials/header %>
+
+    <body>
+
+        <section class="banner2 bg5 p-b-55">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="sectionHeader">
+                            Compare
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div id="card1" class="card" style="width:250px; height: auto; min-height: 300px; display: block">
+                            <button class="closebutton" id="closebutton0" style="font-size:24px; float: right; display:inline-block; padding:2px 7px; display: none">
+                                <i class="fa fa-close"></i>
+                            </button>
+                            <div class="card-body">
+                                <h4 class="card-title compareitem" id="compareitem0" style="text-align: center"></h4>
+                                <h4 class="card-text noitem" id="noitem0" style="text-align: center"></h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div id="card2" class="card" style="width:250px; height: auto; min-height: 300px; display: block">
+                            <button class="closebutton" id="closebutton1" style="font-size:24px; float: right; display:inline-block; padding:2px 7px; display: none">
+                                <i class="fa fa-close"></i>
+                            </button>
+                            <div class="card-body">
+                                <h4 class="card-title compareitem" id="compareitem1" style="text-align: center"></h4>
+                                <h4 class="card-text noitem" id="noitem1" style="text-align: center"></h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div id="card3" class="card" style="width:250px; height: auto; min-height: 300px; display: block">
+                            <button class="closebutton" id="closebutton2" style="font-size:24px; float: right; display:inline-block; padding:2px 7px; display: none">
+                                <i class="fa fa-close"></i>
+                            </button>
+                            <div class="card-body">
+                                <h4 class="card-title compareitem" id="compareitem2" style="text-align: center"></h4>
+                                <h4 class="card-text noitem" id="noitem2" style="text-align: center"></h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div>
+                            <select class="listview" name="comparelist" id="comparelist" size="9" style="height: 160px; width: 350px" multiple="multiple">
+                                <!-- IMPORTANT CANNOT HAVE WHITE SPACE, DO NOT AUTO INDENT -->
+                                <% for(var i=0; i < comparelist.length; i++){ %>
+                                    <option class="listviewitem" value="<%= comparelist[i].itemDescription %>" id="<%= i %>"><%- comparelist[i].itemDescription %></option>
+                                    <% } %>
+                            </select>
+
+                            <select class="hiddenlistview" name="hiddencomparelist" id="hiddencomparelist" style="width: 350px; display: none">
+                                <!-- IMPORTANT CANNOT HAVE WHITE SPACE, DO NOT AUTO INDENT -->
+                                <% for(var j=0; j < comparelist.length; j++){ %><option class="listviewitem" id="<%= j %>"><%- comparelist[j].ListingID %>:<%- comparelist[j].itemDescription %></option>
+                                    <% } %>
+                            </select>
+
+                            <button class="flex-c-m bg4 size1 bo-rad-23 hov1 m-text3 trans-0-4 m-t-5 m-b-5 m-r-10" style="margin-left: 45px" id="addtocompare">Add item to compare</button>
+                            <button class="flex-c-m bg4 size1 bo-rad-23 hov1 m-text3 trans-0-4 m-t-5 m-b-5 m-r-10" style="margin-left: 45px" id="removefromlist"
+                                onclick="removeFromCompareList()">Remove item from list</button>
+                            <a href="/compare/selected_comparetype_shop">
+                                <button class="flex-c-m bg4 size1 bo-rad-23 hov1 m-text3 trans-0-4 m-t-5 m-b-5 m-r-10" style="margin-left: 45px" id="addtocomparelist">Add item to compare list</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row">
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-6">
+                        <button class="flex-c-m bg4 size1 bo-rad-23 hov1 m-text3 trans-0-4 m-t-5 m-b-5 m-r-10">Compare</button>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                </div> -->
+            </div>
+        </section>
+
+        <% include ../partials/footer %>
+
+            <script>
+                var items = [];
+                $(function () {
+                    var listingid;
+                    var selecteditem = $(".listview option");
+                    var currentselecteditem = "";
+                    //var i = 0;
+                    selecteditem.each(function () {                             //FIRST LOOP
+                        currentselecteditem = $(this).text();
+
+                        //selecteditem = selecteditem.text().trim();
+                        $("#hiddencomparelist > option").each(function () {     //SECOND LOOP
+                            var hiddenid = this.text.trim().split(":");
+                            //console.log(hiddenid[0]);
+                            //console.log(hiddenid[1]);
+                            if (hiddenid[1] == currentselecteditem) {
+                                listingid = hiddenid[0];
+                                //console.log(listingid);
+
+                                $.ajax({
+                                    url: "/compare/" + listingid,
+                                    type: "GET",
+                                    async: false,
+                                    success: function (data) {
+                                        //console.log(data.length)
+                                        //console.log(data);                                
+                                        //console.log("push");
+                                        //console.log(data);
+                                        items.push({
+                                            image: '<img src="images/listingImages/' + data[0].itemPicture + '" style="width:100%">',
+                                            itemdescription: '<h4>' + data[0].itemDescription + '</h4>',
+                                            itemtype: '<h4><b>Type:</b> ' + data[0].itemType + '</h4>',
+                                            itembrand: '<h4><b>Brand:</b> ' + data[0].itemBrand + '</h4>',
+                                            itemmodel: '<h4><b>Model:</b> ' + data[0].itemModel + '</h4>',
+                                            price: '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>',
+                                            button: '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>',
+                                        })
+                                        /* items.push({
+                                            image: data[0].itemPicture,
+                                            itemdescription: data[0].itemdescription,
+                                            itemtype: data[0].itemType,
+                                            itembrand: data[0].itemBrand,
+                                            itemmodel: data[0].itemModel,
+                                            price: data[0].itemPrice,
+                                            button: listingid,
+                                        }) */
+                                        console.log(items);
+                                        //console.log("pushed");
+                                    }
+                                });
+                            }
+                        })
+                        //console.log(items[0]);
+                        //console.log(i);
+                        //i++;
+                        //console.log(items[i]);
+                    })
+                })
+
+                function removeFromCompareList() {
+                    var selecteditem = $(".listview option:selected");
+                    var itemString = "";
+                    selecteditem.each(function () {
+                        itemString += "&"
+                        itemString += $(this).text();
+                    })
+                    //console.log(itemString);
+                    $.ajax({
+                        url: "/compare/delete/" + itemString,
+                        type: "POST",
+                        success: function () {
+                            console.log("DELETING")
+                            //var selectedRemove = $(".listview option:selected").text();
+                            //console.log(selectedRemove);
+                            $(".listview option:selected").remove();
+                            
+                            /* $(".hiddenlistview > option").each(function() {
+                                var check = this.text.trim().split(":");
+                                if (check[1] == selectedRemove){
+
+                                }
+                            }) */
+                        }
+                    })
+                }
+
+                function addItem(i, length) {
+                    if (length == 1) {
+                        var listingid;
+                        var selecteditem = $(".listview option:selected");
+                        //selecteditem = selecteditem.text().trim();
+                        $("#hiddencomparelist > option").each(function () {
+                            var hiddenid = this.text.trim().split(":");
+                            //console.log(hiddenid[0]);
+                            //console.log(hiddenid[1]);
+                            if (hiddenid[1] == selecteditem.text()) {
+                                listingid = hiddenid[0];
+                                console.log(listingid);
+                            }
+                        })
+                        $.get({
+                            url: "/compare/" + listingid,
+                            success: function (data) {
+                                $("#compareitem" + i).html(function () {
+                                    var image = '<img src="images/listingImages/' + data[0].itemPicture + '" style="width:100%">'
+                                    var itemdescription = '<h4>' + data[0].itemDescription + '</h4>'
+                                    var itemtype = '<h4><b>Type:</b> ' + data[0].itemType + '</h4>'
+                                    if (data[0].itemBrand != null || data[0].itemModel != null) {
+                                        var itembrand = '<h4><b>Brand:</b> ' + data[0].itemBrand + '</h4>'
+                                        var itemmodel = '<h4><b>Model:</b> ' + data[0].itemModel + '</h4>'
+                                        var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                        var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                        return '<div>' + image + itemdescription + itembrand + itemmodel + itemtype + price + button + '</div>';
+                                    }
+                                    else if (data[0].itemBrand == null || data[0].itemModel == null) {
+                                        var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                        var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                        return '<div>' + image + itemdescription + itemtype + price + button + '</div>';
+                                    }
+                                })
+                            }
+                        });
+                    }
+                    else if (length > 1) {
+                        var listingid;
+                        var currentselecteditem
+                        var selecteditem = $(".listview option:selected");
+                        selecteditem.each(function () {                              //first loop
+                            //console.log($(this).text())
+                            currentselecteditem = $(this).text();
+                            //console.log(currentselecteditem);
+                            //selecteditem = selecteditem.text().trim();
+                            $("#hiddencomparelist > option").each(function () {     //second loop
+                                var hiddenid = this.text.trim().split(":");
+                                //console.log(hiddenid[0]);
+                                //console.log(hiddenid[1]);
+                                if (hiddenid[1] == currentselecteditem) {
+                                    listingid = hiddenid[0];
+                                    console.log(listingid);
+                                    console.log("MATCHED");
+                                }
+                            })
+                            console.log("check");
+                            console.log(listingid);
+                            /* $.ajax({
+                                async: false,
+                                type: "GET",
+                                url:"/compare/" + listingid,
+                                success: function(data){
+                                    $("#compareitem" + i).html(function () {
+                                        var image = '<img src="images/listingImages/' + data[0].itemPicture + '" style="width:100%">'
+                                        var itemdescription = '<h4>' + data[0].itemDescription + '</h4>'
+                                        var itemtype = '<h4><b>Type:</b> ' + data[0].itemType + '</h4>'
+                                        if (data[0].itemBrand != null || data[0].itemModel != null) {
+                                            var itembrand = '<h4><b>Brand:</b> ' + data[0].itemBrand + '</h4>'
+                                            var itemmodel = '<h4><b>Model:</b> ' + data[0].itemModel + '</h4>'
+                                            var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                            var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                            return '<div>' + image + itemdescription + itembrand + itemmodel + itemtype + price + button + '</div>';
+                                        }
+                                        else if (data[0].itemBrand == null || data[0].itemModel == null) {
+                                            var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                            var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                            return '<div>' + image + itemdescription + itemtype + price + button + '</div>';
+                                        }
+                                        i++;
+                                    })
+                                    console.log("INSERTED");
+                                }
+                            }) */
+                            $.get({
+                                url: "/compare/" + listingid,
+
+                                success: function (data) {
+                                    $("#compareitem" + i).html(function () {
+                                        var image = '<img src="images/listingImages/' + data[0].itemPicture + '" style="width:100%">'
+                                        var itemdescription = '<h4>' + data[0].itemDescription + '</h4>'
+                                        var itemtype = '<h4><b>Type:</b> ' + data[0].itemType + '</h4>'
+                                        if (data[0].itemBrand != null || data[0].itemModel != null) {
+                                            var itembrand = '<h4><b>Brand:</b> ' + data[0].itemBrand + '</h4>'
+                                            var itemmodel = '<h4><b>Model:</b> ' + data[0].itemModel + '</h4>'
+                                            var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                            var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                            return '<div>' + image + itemdescription + itembrand + itemmodel + itemtype + price + button + '</div>';
+                                        }
+                                        else if (data[0].itemBrand == null || data[0].itemModel == null) {
+                                            var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                            var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                            return '<div>' + image + itemdescription + itemtype + price + button + '</div>';
+                                        }
+                                        i++;
+                                    })
+                                    console.log("INSERTED");
+                                }
+                            });
+                        })
+                    }
+                }
+
+                /* function addItem() {
+                    if ($('#noitem0').is(":empty")) {
+                        var listingid;
+                        var selecteditem = $(".listview option:selected");
+                        //selecteditem = selecteditem.text().trim();
+                        $("#hiddencomparelist > option").each(function () {
+                            var hiddenid = this.text.trim().split(":");
+                            //console.log(hiddenid[0]);
+                            //console.log(hiddenid[1]);
+                            if (hiddenid[1] == selecteditem.text()) {
+                                listingid = hiddenid[0];
+                            }
+                        })
+                        $.get({
+                            url: "/compare/" + listingid,
+                            success: function (data) {
+                                $("#compareitem0").html(function () {
+                                    var image = '<img src="images/listingImages/' + data[0].itemPicture + '" style="width:100%">'
+                                    var itemdescription = '<h4>' + data[0].itemDescription + '</h4>'
+                                    var itemtype = '<h4><b>Type:</b> ' + data[0].itemType + '</h4>'
+                                    if (data[0].itemBrand != null || data[0].itemModel != null) {
+                                        var itembrand = '<h4><b>Brand:</b> ' + data[0].itemBrand + '</h4>'
+                                        var itemmodel = '<h4><b>Model:</b> ' + data[0].itemModel + '</h4>'
+                                        var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                        var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                        return '<div>' + image + itemdescription + itembrand + itemmodel + itemtype + price + button + '</div>';
+                                    }
+                                    else if (data[0].itemBrand == null || data[0].itemModel == null) {
+                                        var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                        var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                        return '<div>' + image + itemdescription + itemtype + price + button + '</div>';
+                                    }
+                                })
+                            }
+                        });
+                    }
+
+                    else if ($('#noitem1').is(":empty")) {
+                        var listingid;
+                        var selecteditem = $(".listview option:selected");
+                        //selecteditem = selecteditem.text().trim();
+                        $("#hiddencomparelist > option").each(function () {
+                            var hiddenid = this.text.trim().split(":");
+                            //console.log(hiddenid[0]);
+                            //console.log(hiddenid[1]);
+                            if (hiddenid[1] == selecteditem.text()) {
+                                listingid = hiddenid[0];
+                            }
+                        })
+                        $.get({
+                            url: "/compare/" + listingid,
+                            success: function (data) {
+                                $("#compareitem1").html(function () {
+                                    var image = '<img src="images/listingImages/' + data[0].itemPicture + '" style="width:100%">'
+                                    var itemdescription = '<h4>' + data[0].itemDescription + '</h4>'
+                                    var itemtype = '<h4><b>Type:</b> ' + data[0].itemType + '</h4>'
+                                    if (data[0].itemBrand != null || data[0].itemModel != null) {
+                                        var itembrand = '<h4><b>Brand:</b> ' + data[0].itemBrand + '</h4>'
+                                        var itemmodel = '<h4><b>Model:</b> ' + data[0].itemModel + '</h4>'
+                                        var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                        var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                        return '<div>' + image + itemdescription + itembrand + itemmodel + itemtype + price + button + '</div>';
+                                    }
+                                    else if (data[0].itemBrand == null || data[0].itemModel == null) {
+                                        var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                        var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                        return '<div>' + image + itemdescription + itemtype + price + button + '</div>';
+                                    }
+                                })
+                            }
+                        });
+                    }
+
+                    else if ($('#noitem2').is(":empty")) {
+                        var listingid;
+                        var selecteditem = $(".listview option:selected");
+                        //selecteditem = selecteditem.text().trim();
+                        $("#hiddencomparelist > option").each(function () {
+                            var hiddenid = this.text.trim().split(":");
+                            //console.log(hiddenid[0]);
+                            //console.log(hiddenid[1]);
+                            if (hiddenid[1] == selecteditem.text()) {
+                                listingid = hiddenid[0];
+                            }
+                        })
+                        $.get({
+                            url: "/compare/" + listingid,
+                            success: function (data) {
+                                $("#compareitem2").html(function () {
+                                    var image = '<img src="images/listingImages/' + data[0].itemPicture + '" style="width:100%">'
+                                    var itemdescription = '<h4>' + data[0].itemDescription + '</h4>'
+                                    var itemtype = '<h4><b>Type:</b> ' + data[0].itemType + '</h4>'
+                                    if (data[0].itemBrand != null || data[0].itemModel != null) {
+                                        var itembrand = '<h4><b>Brand:</b> ' + data[0].itemBrand + '</h4>'
+                                        var itemmodel = '<h4><b>Model:</b> ' + data[0].itemModel + '</h4>'
+                                        var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                        var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                        return '<div>' + image + itemdescription + itembrand + itemmodel + itemtype + price + button + '</div>';
+                                    }
+                                    else if (data[0].itemBrand == null || data[0].itemModel == null) {
+                                        var price = '<h4><b>Price:</b> $' + data[0].itemPrice + '</h4>'
+                                        var button = '<a href="product_details/' + listingid + '" class="btn btn-primary">Details</a>'
+                                        return '<div>' + image + itemdescription + itemtype + price + button + '</div>';
+                                    }
+                                })
+                            }
+                        });
+                    }
+                }
+ */
+                $(function () {
+                    $('#compareitem0').bind("DOMSubtreeModified", function () {
+                        if (!($("#compareitem0").is(":empty"))) {
+                            $("#noitem0").empty();
+                        }
+                    })
+                    $('#compareitem1').bind("DOMSubtreeModified", function () {
+                        if (!($("#compareitem1").is(":empty"))) {
+                            $("#noitem1").empty();
+                        }
+                    })
+                    $('#compareitem2').bind("DOMSubtreeModified", function () {
+                        if (!($("#compareitem2").is(":empty"))) {
+                            $("#noitem2").empty();
+                        }
+                    })
+                })
+
+                function addDefaultText() {  //function for inserting default text, function called when item is removed
+                    var noitem = "Add an item from compare list"
+                    if ($("#compareitem0").is(":empty") && $("#noitem0").is(":empty")) {
+                        $("#compareitem0").siblings().append(noitem);
+                    }
+                    else if ($("#compareitem1").is(":empty") && $("#noitem1").is(":empty")) {
+                        $("#compareitem1").siblings().append(noitem);
+                    }
+                    else if ($("#compareitem2").is(":empty") && $("#noitem2").is(":empty")) {
+                        $("#compareitem2").siblings().append(noitem);
+                    }
+                }
+
+                $(function () {  //insert default text on load
+                    var noitem = "Add an item from compare list"
+                    if ($(".compareitem").is(":empty")) {
+                        $(".compareitem").attr("id", function () {
+                            $(this).siblings().append(noitem);
+                        })
+                    }
+                })
+
+                $(function () {     //remove item in compare
+                    $(".closebutton").on("click", function () {
+                        var cardID = $(this).parent().attr("id");
+                        $("#" + cardID).children().children().empty()
+                        addDefaultText()
+                    })
+                })
+
+                $(function () {
+                    $('.compareitem').bind("DOMSubtreeModified", function () {   //on change, disable cross button if item not in compare
+                        var compareitemid = $(this).attr("id");
+                        var getID = compareitemid.substr(-1, 1);
+                        if (($("#" + compareitemid).is(":empty"))) {
+                            $("#closebutton" + getID).css("display", "none");
+                        }
+                    });
+                })
+
+                $(function () {
+                    $('.compareitem').bind("DOMSubtreeModified", function () {   //on change, enable cross button when item in compare
+                        var compareitemid = $(this).attr("id");
+                        var getID = compareitemid.substr(-1, 1);
+                        if (!($("#" + compareitemid).is(":empty"))) {
+                            //display: none
+                            $("#closebutton" + getID).css("display", "inline-block");
+                        }
+                    });
+                })
+
+                $(function () {
+                    if ($("#compareitem0").is(":empty") && $("#compareitem1").is(":empty") && $("#compareitem2").is(":empty")) { //all empty
+                        $(".listview").change(function () {     //check if more than 3 selected, if yes, disable button
+                            if ($(".listview option:selected").length > 3) {
+                                $("#addtocompare").attr("disabled", true);
+                            }
+                            else if ($(".listview option:selected").length <= 3) {
+                                $("#addtocompare").attr("disabled", false);
+                            }
+                        });
+                    }
+                    else if ($("#compareitem1").is(":empty") && $("#compareitem2").is(":empty")) { //first not empty
+                        $(".listview").change(function () {     //check if more than 2 selected, if yes, disable button
+                            if ($(".listview option:selected").length > 2) {
+                                $("#addtocompare").attr("disabled", true);
+                            }
+                            else if ($(".listview option:selected").length <= 2) {
+                                $("#addtocompare").attr("disabled", false);
+                            }
+                        });
+                    }
+                    else if ($("#compareitem0").is(":empty") && $("#compareitem2").is(":empty")) { //second not empty
+                        $(".listview").change(function () {     //check if more than 2 selected, if yes, disable button
+                            if ($(".listview option:selected").length > 2) {
+                                $("#addtocompare").attr("disabled", true);
+                            }
+                            else if ($(".listview option:selected").length <= 2) {
+                                $("#addtocompare").attr("disabled", false);
+                            }
+                        });
+                    }
+                    else if ($("#compareitem0").is(":empty") && $("#compareitem1").is(":empty")) { //third not empty
+                        $(".listview").change(function () {     //check if more than 2 selected, if yes, disable button
+                            if ($(".listview option:selected").length > 2) {
+                                $("#addtocompare").attr("disabled", true);
+                            }
+                            else if ($(".listview option:selected").length <= 2) {
+                                $("#addtocompare").attr("disabled", false);
+                            }
+                        });
+                    }
+                    else if ($("#compareitem2").is(":empty")) {  //first and second not empty
+                        $(".listview").change(function () {     //check if more than 1 selected, if yes, disable button
+                            if ($(".listview option:selected").length > 1) {
+                                $("#addtocompare").attr("disabled", true);
+                            }
+                            else if ($(".listview option:selected").length <= 1) {
+                                $("#addtocompare").attr("disabled", false);
+                            }
+                        });
+                    }
+                    else if ($("#compareitem1").is(":empty")) {  //first and third not empty
+                        $(".listview").change(function () {     //check if more than 1 selected, if yes, disable button
+                            if ($(".listview option:selected").length > 1) {
+                                $("#addtocompare").attr("disabled", true);
+                            }
+                            else if ($(".listview option:selected").length <= 1) {
+                                $("#addtocompare").attr("disabled", false);
+                            }
+                        });
+                    }
+                    else if ($("#compareitem0").is(":empty")) {  //second and third not empty
+                        $(".listview").change(function () {     //check if more than 1 selected, if yes, disable button
+                            if ($(".listview option:selected").length > 1) {
+                                $("#addtocompare").attr("disabled", true);
+                            }
+                            else if ($(".listview option:selected").length <= 1) {
+                                $("#addtocompare").attr("disabled", false);
+                            }
+                        });
+                    }
+                    else if (!($("#compareitem0").is(":empty")) && !($("#compareitem1").is(":empty")) && !($("#compareitem2").is(":empty"))) {  //all not empty
+                        $(".listview").change(function () {     //check if more than 0 selected, if yes, disable button
+                            if ($(".listview option:selected").length > 0) {
+                                $("#addtocompare").attr("disabled", true);
+                            }
+                            else if ($(".listview option:selected").length <= 0) {
+                                $("#addtocompare").attr("disabled", false);
+                            }
+                        });
+                    }
+                })
+
+                $(function () {     //to append item into compare
+                    $("#addtocompare").on('click', function () {
+                        var item = $(".listview option:selected");
+                        if ($("#compareitem0").is(":empty") && $("#compareitem1").is(":empty") && $("#compareitem2").is(":empty")) { //all empty                            
+                            var a = 0;
+                            console.log(items[0].itembrand)
+                            //console.log(item.index());
+                            //var number = item.index()
+                            //var number = $(".listview option:selected").index();
+                            if (item.length == 1) {
+                                var number = item.index()
+                                $("#compareitem" + a).append((item).text());
+                                //addItem(a, item.length);
+                                //$("#compareitem" + a).html('<img src="images/listingImages/'+items[a].image+'" style="size: 100%">');
+                                $("#compareitem" + a).html(function () {
+                                    if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                    }
+                                    else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                    }
+                                })
+                                a++;
+                            }
+                            else if (item.length == 2) {
+                                item.each(function () {
+                                    var number = $(this).index()
+                                    //console.log($(this).index());
+                                    $("#compareitem" + a).append($(this).text());
+                                    //addItem(a, item.length);
+                                    $("#compareitem" + a).html(function () {
+                                        if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                        }
+                                        else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                        }
+                                    })
+                                    a++;
+                                })
+                            }
+                            else if (item.length == 3) {
+                                item.each(function () {
+                                    var number = $(this).index()
+                                    $("#compareitem" + a).append($(this).text());
+                                    //addItem(a, item.length);
+                                    $("#compareitem" + a).html(function () {
+                                        if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                        }
+                                        else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                        }
+                                    })
+                                    a++;
+                                })
+                            }
+                            else {
+                                alert("You can only add 2 more items");
+                            }
+                        }
+                        else if ($("#compareitem1").is(":empty") && $("#compareitem2").is(":empty")) { //first not empty                            
+                            var b = 1;
+                            if (item.length == 1) {
+                                var number = item.index()
+                                $("#compareitem" + b).append((item).text());
+                                //addItem(b, item.length);
+                                $("#compareitem" + b).html(function () {
+                                    if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                    }
+                                    else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                    }
+                                })
+                                b++;
+                            }
+                            else if (item.length == 2) {
+                                item.each(function () {
+                                    var number = $(this).index()
+                                    $("#compareitem" + b).append($(this).text());
+                                    //addItem(b, item.length);
+                                    $("#compareitem" + b).html(function () {
+                                        if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                        }
+                                        else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                        }
+                                    })
+                                    b++;
+                                })
+                            }
+                            else {
+                                alert("You can only add 2 more items");
+                            }
+                        }
+                        else if ($("#compareitem0").is(":empty") && $("#compareitem2").is(":empty")) { //second not empty                                
+                            var c = 0;
+                            if (item.length == 1) {
+                                var number = item.index()
+                                $("#compareitem0").append((item).text());
+                                $("#compareitem" + c).html(function () {
+                                    if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                    }
+                                    else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                    }
+                                })
+                                //addItem(c, item.length);
+                            }
+                            else if (item.length == 2) {
+                                var c = 0;
+                                item.each(function () {
+                                    var number = $(this).index()
+                                    $("#compareitem" + c).append($(this).text());
+                                    //addItem(c, item.length);
+                                    $("#compareitem" + c).html(function () {
+                                        if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                        }
+                                        else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                        }
+                                    })
+                                    c++;
+                                    if (c == 1) {
+                                        c++;
+                                    }
+                                })
+                            }
+                            else {
+                                alert("You can only add 2 more items");
+                            }
+                        }
+                        else if ($("#compareitem0").is(":empty") && $("#compareitem1").is(":empty")) { //third not empty
+                            var d = 0;
+                            if (item.length == 1) {
+                                var number = item.index()
+                                $("#compareitem" + d).append($(this).text());
+                                $("#compareitem" + d).html(function () {
+                                    if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                    }
+                                    else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                    }
+                                })
+                                //addItem(d, item.length);
+                                d++;
+                            }
+                            else if (item.length == 2) {
+                                item.each(function () {
+                                    var number = $(this).index()
+                                    $("#compareitem" + d).append($(this).text());
+                                    //addItem(d, item.length);
+                                    $("#compareitem" + d).html(function () {
+                                        if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                        }
+                                        else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                            return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                        }
+                                    })
+                                    d++;
+                                })
+                            }
+                            else {
+                                alert("You can only add 2 more items");
+                            }
+                        }
+                        else if ($("#compareitem2").is(":empty")) {  //first and second not empty                                
+                            var e = 2;
+                            if (item.length == 1) {
+                                var number = item.index()
+                                $("#compareitem" + e).append($(this).text());
+                                $("#compareitem" + e).html(function () {
+                                    if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                    }
+                                    else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                    }
+                                })
+                                //addItem(e, item.length);
+                            }
+                            else {
+                                alert("You can only add 1 more item");
+                            }
+                        }
+                        else if ($("#compareitem1").is(":empty")) {  //first and third not empty                                
+                            var f = 1;
+                            if (item.length == 1) {
+                                var number = item.index()
+                                $("#compareitem" + f).append($(this).text());
+                                $("#compareitem" + f).html(function () {
+                                    if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                    }
+                                    else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                    }
+                                })
+                                //addItem(f, item.length);
+                            }
+                            else {
+                                alert("You can only add 1 more item");
+                            }
+                        }
+                        else if ($("#compareitem0").is(":empty")) {  //second and third not empty                                
+                            var g = 0;
+                            if (item.length == 1) {
+                                var number = item.index()
+                                $("#compareitem" + g).append($(this).text());
+                                $("#compareitem" + g).html(function () {
+                                    if (items[number].itembrand != null || items[number].itemmodel != null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].itembrand + items[number].itemmodel + items[number].price + items[number].button + '</div>'
+                                    }
+                                    else if (items[number].itembrand == null || items[number].itemmodel == null) {
+                                        return '<div>' + items[number].image + items[number].itemdescription + items[number].itemtype + items[number].price + items[number].button + '</div>'
+                                    }
+                                })
+                                //addItem(g, item.length);
+                            }
+                            else {
+                                alert("You can only add 1 more item");
+                            }
+                        }
+                        else if (!($("#compareitem0").is(":empty")) && !($("#compareitem1").is(":empty")) && !($("#compareitem2").is(":empty"))) {  //all not empty                                
+                            alert("Only 3 items can be compared at once");
+                        }
+                    })
+                })
+            </script>
+    </body>

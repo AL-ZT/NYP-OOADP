@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="/">
+
+<head>
+    <style>
+        @media screen and (min-width:993px) {
+            .sectionHeader {
+                padding-top: 100px;
+            }
+        }
+    </style>
+</head>
+<% include ../partials/header %>
+
+    <body>
+        <section class="cart bgwhite p-t-70 p-b-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="sectionHeader">
+                            Bookmarks
+                        </h1>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <!-- Cart item -->
+                <div class="container-table-cart pos-relative">
+                    <div class="wrap-table-shopping-cart bgwhite">
+                        <div id="emptymessage" style="text-align: center;">
+                            
+                        </div>
+                        <table class="table-shopping-cart">
+                            <tr class="table-head" id="bookmarkstablehead">
+                                <th class="column-1"></th>
+                                <th class="column-2">Item</th>
+                                <th class="column-3">Price</th>
+                                <th class="column-4 p-l-70">Description</th>
+                                <th class="column-5"></th>
+                            </tr>
+                            <% for(var i=0; i < bookmarkItem.length; i++){ %>
+                                <tr class="table-row bookmarks">
+                                    <td class="column-1">
+                                        <div class="cart-img-product b-rad-4 o-f-hidden">
+                                            <img src="images/listingImages/<%= bookmarkItem[i].itemPicture %>" alt="IMG-PRODUCT">
+                                        </div>
+                                    </td>
+                                    <td class="column-2 bookmarkscheck"><%= bookmarkItem[i].itemDescription %></td>
+                                    <td class="column-3">$
+                                        <%= bookmarkItem[i].itemPrice %>
+                                    </td>
+                                    <td class="column-4" style="text-align: center">
+                                        <%= bookmarkItem[i].itemAdditionalDescription %>
+                                    </td>
+                                    <td class="column-5">
+                                        <button>
+                                            <a href="product_details/<%= bookmarkItem[i].ListingID %>" style="width: 100px" class="btn btn-primary">Details</a>
+                                        </button>
+                                        <button>
+                                            <a href="bookmarks/<%= bookmarkItem[i].bookmarkID %>" style="width: 100px; margin-top: 10px;" class="btn btn-danger">Delete</a>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <% } %>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <% include ../partials/footer %>
+
+    </body>
+    <script>
+
+    //check if bookmarkItem is empty, if yes, add sentence to div
+    $(function() {
+        if($("#bookmarkstablehead").siblings().length <= 0){
+            console.log("zzzzzzz")
+            $("#bookmarkstablehead").hide();     
+            $("#emptymessage").html('<h2>You have no bookmarks!</h2>');
+        }
+        else if($("#bookmarkstablehead").siblings().length > 0){
+            console.log("LOL")
+            $("#bookmarkstablehead").show();
+            $("#emptymessage").empty();
+        }
+    })
+
+    </script>

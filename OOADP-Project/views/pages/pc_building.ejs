@@ -1,0 +1,472 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<% include ../partials/header %>
+
+    <head>
+        <style>
+            @media screen and (min-width:993px) {
+                .firstelement {
+                    padding-top: 100px;
+                }
+            }
+
+            .easyPaginateNav a.current {
+                background-color: black;
+                color: azure;
+            }
+
+            .flex-w {
+                width: 100%;
+            }
+
+            .w-size12 {
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body class="animsition">
+        <section class="bgwhite p-t-55 p-b-65 firstelement">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+                        <div class="leftbar p-r-20 p-r-0-sm">
+                            <!--  -->
+                            <h4 class="m-text14 p-b-7">
+                                Categories
+                            </h4>
+
+                            <h6 class="s-text11 p-b-7">
+                                Choose a minimum of 1 item from each list
+                            </h6>
+
+                            <ul class="p-b-54">
+                                <li class="p-t-4">
+                                    <a href="#" id="cpuquery" class="s-text13 active1">
+                                        Central Processing Unit (CPU)
+                                    </a>
+                                </li>
+
+                                <li class="p-t-4">
+                                    <a href="#" id="gpuquery" class="s-text13">
+                                        Graphics Processing Unit (GPU)
+                                    </a>
+                                </li>
+
+                                <li class="p-t-4">
+                                    <a href="#" id="ramquery" class="s-text13">
+                                        Random Access Memory (RAM)
+                                    </a>
+                                </li>
+
+                                <li class="p-t-4">
+                                    <a href="#" id="motherboardquery" class="s-text13">
+                                        Motherboard
+                                    </a>
+                                </li>
+
+                                <li class="p-t-4">
+                                    <a href="#" id="psuquery" class="s-text13">
+                                        Power Supply Unit (PSU)
+                                    </a>
+                                </li>
+
+                                <li class="p-t-4">
+                                    <a href="#" id="storagequery" class="s-text13">
+                                        Hard Disk Drives (HDD) / Solid State Drive (SSD)
+                                    </a>
+                                </li>
+
+                                <li class="p-t-4">
+                                    <a href="#" id="casesquery" class="s-text13">
+                                        Cases
+                                    </a>
+                                </li>
+
+                                <li class="p-t-4">
+                                    <a href="#" id="othersquery" class="s-text13">
+                                        Others
+                                    </a>
+                                </li>
+
+                                <li class="p-t-4">
+                                    <a href="#" id="extrasquery" class="s-text13">
+                                        Extra Services
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!--  -->
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
+                        <!--  -->
+                        <div class="flex-sb-m flex-w p-b-35 justify-content-end">
+                            <div class="flex-w">
+
+                                <div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
+                                    <select class="selection-2" id="sort2" name="sorting" onchange="sortItems()">
+                                        <option value="Price">Price</option>
+                                        <option value="200">$0.00 - $200.00</option>
+                                        <option value="400">$200.00 - $400.00</option>
+                                        <option value="600">$400.00 - $600.00</option>
+                                        <option value="800">$600.00 - $800.00</option>
+                                        <option value="801">$800.00+</option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <span class="s-text8 p-t-5 p-b-5" id="resultscounter">
+
+                            </span>
+                        </div>
+                        <!-- Product -->
+                        <div class="row parent" id="parent">
+                            <% cpu.forEach(function(item) { %>
+                                <div class="col-sm-12 col-md-6 col-lg-6 p-b-50 child">
+                                    <!-- Block2 -->
+                                    <div class="block2">
+                                        <div class="block2-img wrap-pic-w of-hidden pos-relative">
+                                            <img src="../images/listingImages/<%= item.itemPicture %>" style="height:360px;width:100%" alt="IMG-PRODUCT">
+
+                                            <div class="block2-overlay trans-0-4" style="text-align: center; color:aliceblue">
+                                                <h3 class="m-t-150">
+                                                    <%= item.itemAdditionalDescription %>
+                                                </h3>
+                                                <h5 class="m-t-50">
+                                                    <%= item.itemStatus %>
+                                                </h5>
+                                                <div class="block2-btn-addcart w-size1 trans-0-4">
+                                                    <!-- Button -->
+                                                    <button value="<%= item.ListingID %>" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4 atc">
+                                                        Add to Cart
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="block2-txt p-t-20">
+                                            <a href="product-detail.html" class="block2-name dis-block s-text3 p-b-5">
+                                                <%= item.itemDescription %>
+                                            </a>
+
+                                            <span class="block2-price m-text6 p-r-5">
+                                                SGD $
+                                                <%= item.itemPrice %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
+
+                        </div>
+                        <!-- Pagination -->
+                        <!--<div class="pagination flex-m flex-w p-t-26" id="pagenumber">
+                            <a href="#" class="item-pagination flex-c-m trans-0-4 active-pagination">1</a>
+                            <a href="#" class="item-pagination flex-c-m trans-0-4">2</a>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Container Selection -->
+        <div id="dropDownSelect1"></div>
+        <div id="dropDownSelect2"></div>
+
+        <!--TemplateCopy-->
+        <div class="col-sm-12 col-md-6 col-lg-6 p-b-50" id="copy" style="display:none">
+            <!-- Block2 -->
+            <div class="block2">
+                <div class="block2-img wrap-pic-w of-hidden pos-relative">
+                    <img src="" alt="IMG-PRODUCT" style="height:360px;width:100%;">
+
+                    <div class="block2-overlay trans-0-4" style="text-align: center; color:aliceblue">
+                        <h3 class="m-t-150"></h3>
+                        <h5 class="m-t-50"></h5>
+                        <div class="block2-btn-addcart w-size1 trans-0-4">
+                            <!-- Button -->
+                            <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="block2-txt p-t-20">
+                    <a href="product-detail.html" class="block2-name dis-block s-text3 p-b-5">
+
+                    </a>
+
+                    <span class="block2-price m-text6 p-r-5">
+                        SGD $
+
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <% include ../partials/footer %>
+            <script type="text/javascript" src="/js/jquery.easyPaginate.js"></script>
+    </body>
+    <script type="text/javascript">
+
+        $(".selection-2").select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $('#dropDownSelect2')
+        });
+
+        $("#cpuquery").click(function () {
+            $.get({
+                url: "/pc_building/cpu",
+                success: function (data) {
+                    updatelist(data);
+                },
+            });
+            removeActiveCategory();
+            $("#cpuquery").addClass("active1");
+            $(".selection-2").val("Price").trigger("change");
+        });
+
+        $("#gpuquery").click(function () {
+            $.get({
+                url: "/pc_building/gpu",
+                success: function (data) {
+                    updatelist(data);
+                }
+            })
+            removeActiveCategory();
+            $("#gpuquery").addClass("active1");
+            $(".selection-2").val("Price").trigger("change");
+        });
+
+        $("#ramquery").click(function () {
+            $.get({
+                url: "/pc_building/ram",
+                success: function (data) {
+                    updatelist(data);
+                }
+            });
+            removeActiveCategory();
+            $("#ramquery").addClass("active1");
+            $(".selection-2").val("Price").trigger("change");
+        });
+
+        $("#motherboardquery").click(function () {
+            $.get({
+                url: "/pc_building/motherboard",
+                success: function (data) {
+                    updatelist(data);
+                }
+            });
+            removeActiveCategory();
+            $("#motherboardquery").addClass("active1");
+            $(".selection-2").val("Price").trigger("change");
+        });
+
+        $("#psuquery").click(function () {
+            $.get({
+                url: "/pc_building/psu",
+                success: function (data) {
+                    updatelist(data);
+                }
+            });
+            removeActiveCategory();
+            $("#psuquery").addClass("active1");
+            $(".selection-2").val("Price").trigger("change");
+        });
+
+        $("#storagequery").click(function () {
+            $.get({
+                url: "/pc_building/storage",
+                success: function (data) {
+                    updatelist(data);
+                }
+            });
+            removeActiveCategory();
+            $("#storagequery").addClass("active1");
+            $(".selection-2").val("Price").trigger("change");
+        });
+
+        $("#casesquery").click(function () {
+            $.get({
+                url: "/pc_building/cases",
+                success: function (data) {
+                    updatelist(data);
+                }
+            });
+            removeActiveCategory();
+            $("#casesquery").addClass("active1");
+            $(".selection-2").val("Price").trigger("change");
+        });
+
+        $("#othersquery").click(function () {
+            $.get({
+                url: "/pc_building/others",
+                success: function (data) {
+                    updatelist(data);
+                }
+            });
+            removeActiveCategory();
+            $("#othersquery").addClass("active1");
+            $(".selection-2").val("Price").trigger("change");
+        });
+
+        $("#extrasquery").click(function () {
+            $.get({
+                url: "/pc_building/extras",
+                success: function (data) {
+                    updatelist(data);
+                }
+            });
+            removeActiveCategory();
+            $("#extrasquery").addClass("active1");
+            $(".selection-2").val("Price").trigger("change");
+        });
+
+        var parent = $(".parent");
+        var results = $('.parent').find('.col-sm-12').length;
+        $("#resultscounter").text("Showing  " + results + " results");
+        paginate();
+
+        function updateResult() {
+            var results = $('.parent').find('.col-sm-12').length
+            $("#resultscounter").text("Showing " + results + " results");
+        }
+
+        function paginate() {
+            $(".easyPaginateNav").remove();
+            $("#parent").easyPaginate({
+                paginateElement: $(".child"),
+                elementsPerPage: 6,
+                effect: 'fade'
+            })
+            $(".easyPaginateNav").addClass("pagination flex-m flex-w p-t-26 justify-content-center");
+            $(".easyPaginateNav a").addClass("item-pagination flex-c-m trans-0-4");
+        }
+
+        function updatelist(data) {
+            parent.html("");
+            data.forEach(function (item) {
+                additem(item);
+            });
+            updateResult();
+            paginate();
+            $('.block2-btn-addcart').each(function () {
+                var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+                $(this).on('click', function () {
+                    var child = ($(this).children()[0]);
+                    var id = $(child).val();
+                    $.ajax({
+                        url: "/shopping_cart/add/" + id + "/1",
+                        type: "POST",
+                    }).then(result => {
+                        if (result == "OK") {
+                            showItemsInCart();
+                            swal(nameProduct, "is added to cart !", "success");
+                        } else if (result == "NOT OK") {
+                            swal(nameProduct, "is already in cart !", "error");
+                        }
+                    });
+                });
+            });
+        }
+
+        function additem(item) {
+            var clone = $("#copy").clone();
+            clone.removeAttr("style");
+            clone.removeAttr("id");
+            var itemPicture = clone.find("img");
+            itemPicture.attr("src", "../images/listingImages/" + item.itemPicture);
+            var itemModel = clone.find("h3");
+            itemModel.html(item.itemAdditionalDescription);
+            var itemDescription = clone.find("h5");
+            itemDescription.html(item.itemStatus);
+            var itemDescription = clone.find("a");
+            itemDescription.html(item.itemDescription);
+            var itemPrice = clone.find("span");
+            itemPrice.html("SGD $" + item.itemPrice);
+            var itemListingID = clone.find("button");
+            itemListingID.attr("class", "flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4 atc");
+            itemListingID.attr("value", item.ListingID);
+            clone.addClass("child");
+            parent.append(clone);
+        }
+
+        function sortItems() {
+            var price = $("#sort2 option:selected").val();
+            var category = $(".active1").attr("id");
+            $.ajax({
+                url: "/pc_building/" + category + "/" + price,
+                type: "GET",
+                success: function (data) {
+                    updatelist(data);
+                }
+            });
+        }
+
+        function removeActiveCategory() {
+            $(".active1").removeClass("active1");
+        }
+
+        function addToCart(id) {
+            $.ajax({
+                url: "/shopping_cart/add/" + id + "/1",
+                type: "POST",
+            }).then(result => {
+                if (result == "OK") {
+                    showItemsInCart();
+                    return "OK";
+                } else if (result == "NOT OK") {
+                    return "NOT OK"
+                }
+            });
+        }
+
+        //$(document).on('click', '.block2-btn-addcart', function (this) {
+            //addToCart($(this).val());
+            // $('.block2-btn-addcart').each(function () {
+            //     var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+            //     $(this).on('click', function () {
+            //         var child = ($(this).children()[0]);
+            //         var id = $(child).val();
+            //         $.ajax({
+            //             url: "/shopping_cart/add/" + id + "/1",
+            //             type: "POST",
+            //         }).then(result => {
+            //             if (result == "OK") {
+            //                 showItemsInCart();
+            //                 swal(nameProduct, "is added to cart !", "success");
+            //             } else if (result == "NOT OK") {
+            //                 swal(nameProduct, "is already in cart !", "error");
+            //             }
+            //         });
+            //     });
+            // });
+        // });
+
+        $('.block2-btn-addcart').each(function () {
+            var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+            $(this).on('click', function () {
+                var child = ($(this).children()[0]);
+                var id = $(child).val();
+                $.ajax({
+                    url: "/shopping_cart/add/" + id + "/1",
+                    type: "POST",
+                }).then(result => {
+                    if (result == "OK") {
+                        showItemsInCart();
+                        swal(nameProduct, "is added to cart !", "success");
+                    } else if (result == "NOT OK") {
+                        swal(nameProduct, "is already in cart !", "error");
+                    }
+                });
+            });
+        });
+
+    </script>
+
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        @media screen and (min-width:993px) {
+            .sectionHeader {
+                padding-top: 100px;
+            }
+
+            .row {
+                padding-bottom: 20px;
+            }
+
+            .hide {
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+<% include ../partials/header %>
+
+    <body>
+        <section class="banner2 bg5 p-b-55">
+            <form method="POST" action="">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="sectionHeader">
+                                Retail Prices
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 p-t-30 p-l-20 p-r-15 sizefull">
+                            <div class="flex-sb-m flex-w p-b-35">
+                                <div class="flex-w sizefull">
+                                    <div class="rs2-select2 bo4 of-hidden sizefull">
+                                        <select class="selection-2 sizefull" id="parttype" name="parttype" required>
+                                            <option></option>
+                                            <option value="cpu">Central Processing Unit (CPU)</option>
+                                            <option value="gpu">Graphics Processing Unit (GPU)</option>
+                                            <option value="ram">Random Access Memory (RAM)</option>
+                                            <option value="motherboard">Motherboard</option>
+                                            <option value="psu">Power Supply Unit (PSU)</option>
+                                            <option value="hdd">Hard Disk Drive (HDD)/Solid State Drive (SSD)</option>
+                                            <option value="cases">Cases</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cputype" class="sizefull" style="display: none">
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull">
+                                <div class=" rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" id="cpubrand" name="cpubrand">
+                                        <option> </option>
+                                        <option value="intel">Intel</option>
+                                        <option value="amd">AMD</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull" id="cpuintelbox" style="display: none">
+                                <div class=" rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" id="cpuintel" name="cpuintel">
+                                        <% for(var a=0; a < intelcpu.length; a++){ %>
+                                            <option>
+                                                <%- intelcpu[a].model %>
+                                            </option>
+                                            <% }; %>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull" id="cpuamdbox" style="display: none">
+                                <div class=" rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" id="cpuamd" name="cpuamd">
+                                        <% for(var b=0; b < amdcpu.length; b++){ %>
+                                            <option>
+                                                <%- amdcpu[b].model %>
+                                            </option>
+                                            <% }; %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="gputype" class="sizefull" style="display: none">
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull">
+                                <div class=" rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" id="gpubrand" name="gpubrand">
+                                        <option> </option>
+                                        <option value="nvidia">NVIDIA</option>
+                                        <option value="amd">AMD</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull" id="gpunvidiabox" style="display: none">
+                                <div class=" rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" id="gpunvidia" name="gpunvidia">
+                                        <% for(var c=0; c < nvidiagpu.length; c++){ %>
+                                            <option>
+                                                <%- nvidiagpu[c].model %>
+                                            </option>
+                                            <% }; %>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-6 col-md-6 p-t-13 p-l-20 sizefull" id="gpuamdbox" style="display: none">
+                                <div class=" rs2-select2 bo4 of-hidden size15 m-b-20">
+                                    <select class="selection-2 sizefull" id="gpuamd" name="gpuamd">
+                                        <% for(var d=0; d < amdgpu.length; d++){ %>
+                                            <option>
+                                                <%- amdgpu[d].model %>
+                                            </option>
+                                            <% }; %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <button id="submit" class="flex-c-m bg4 size1 bo-rad-23 hov1 m-text3 trans-0-4">Submit</button>
+                    </div>
+            </form>
+        </section>
+
+        <div id="dropDownSelectType"></div>
+        <div id="dropDownSelectCpuBrand"></div>
+        <div id="dropDownSelectCpuINTEL"></div>
+        <div id="dropDownSelectCpuAMD"></div>
+        <div id="dropDownSelectGpuBrand"></div>
+        <div id="dropDownSelectGpuNVIDIA"></div>
+        <div id="dropDownSelectGpuAMD"></div>
+
+        <% include ../partials/footer %>
+
+            <script type="text/javascript">
+                $("#parttype").select2({
+                    dropdownParent: $('#dropDownSelectType'),
+                    placeholder: "Type of item",
+                });
+                $("#cpubrand").select2({
+                    dropdownParent: $("#dropDownSelectCpuBrand"),
+                    placeholder: "Company"
+                });
+                $("#cpuintel").select2({
+                    dropdownParent: $("#dropDownSelectCpuINTEL"),
+                    placeholder: "Select CPU"
+                });
+                $("#cpuamd").select2({
+                    dropdownParent: $("#dropDownSelectCpuAMD"),
+                    placeholder: "Select CPU"
+                });
+                $("#gpubrand").select2({
+                    dropdownParent: $("#dropDownSelectGpuBrand"),
+                    placeholder: "Company"
+                });
+                $("#gpunvidia").select2({
+                    dropdownParent: $("#dropDownSelectGpuNVIDIA"),
+                    placeholder: "Select GPU"
+                });
+                $("#gpuamd").select2({
+                    dropdownParent: $("#dropDownSelectGpuAMD"),
+                    placeholder: "Select GPU"
+                });
+
+                $("#parttype").change(() => {
+                    $("#cputype").hide();
+                    $("#gputype").hide();
+
+                    if ($("#parttype").val() == "cpu") {
+                        $("#cputype").show();
+                        $("#gputype").hide();
+                    }
+                    else if ($("#parttype").val() == "gpu") {
+                        $("#gputype").show();
+                        $("#cputype").hide();
+                    }
+                })
+
+                $("#cpubrand").change(() => {
+                    //$("#cpuintelbox").hide();
+                    //$("#cpuamdbox").hide();
+
+                    if ($("#cpubrand").val() == "intel") {
+                        $("#cpuintelbox").show();
+                        $("#cpuamdbox").hide();
+                    }
+                    else if ($("#cpubrand").val() == "amd") {
+                        $("#cpuamdbox").show();
+                        $("#cpuintelbox").hide();
+                    }
+                })
+
+                $("#gpubrand").change(() => {
+                    //$("#gpunvidiabox").hide();
+                    //$("#gpuamdbox").hide();
+
+                    if ($("#gpubrand").val() == "nvidia") {
+                        $("#gpunvidiabox").show();
+                        $("#gpuamdbox").hide();
+                    }
+                    else if ($("#gpubrand").val() == "amd") {
+                        $("#gpuamdbox").show();
+                        $("#gpunvidiabox").hide();
+                    }
+                })
+
+            </script>
+    </body>
